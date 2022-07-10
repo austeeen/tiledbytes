@@ -1,4 +1,7 @@
 #include "tmx.hpp"
+#include "tiled_util.hpp"
+#include "tiled_core.hpp"
+#include "extractors.hpp"
 
 void loadTmx(const char *filepath, Tmx& usr_tmx)
 {
@@ -20,16 +23,13 @@ void loadTmx(const char *filepath, Tmx& usr_tmx)
     while(node != nullptr) {
         std::string type = std::string(node->name());
         if (type == "tileset") {
-            usr_tmx.tilesets.insert(std::pair<int, const Tileset>(
-                attr<int>(node, "firstgid"),
-                newTileset(node))
-            );
+            newTileset(node, usr_tmx.tilesets);
         } else if (type == "layer") {
-            usr_tmx.layers.push_back(newTileLayer(node));
+            newTileLayer(node, usr_tmx.layers);
         } else if (type == "objectgroup") {
-            usr_tmx.layers.push_back(newTileLayer(node));
+            newObjectLayer(node, usr_tmx.layers);
         } else if (type == "group") {
-            usr_tmx.layers.push_back(newGroupedLayer(node));
+            newGroupedLayer(node, usr_tmx.layers);
         } else {
             printf("Warning: unknown layer type: %s\n", type.c_str());
         }
@@ -52,10 +52,11 @@ const Image _newImageSource(rx::xml_node<>* node, const char* node_name)
     };
 }
 
-const Tileset newTileset(rx::xml_node<>* node)
+void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
 {
     // Get basic attributes about this tileset -- to be used to generate this Tilesets' member data
     // by the subroutines herein
+    const int first_gid = attr<int>(node, "firstgid");
     const char* name = attr<const char*>(node, "name");
     const int tilecount = attr<int>(node, "tilecount");
     const int columns = attr<int>(node, "columns");
@@ -126,48 +127,55 @@ const Tileset newTileset(rx::xml_node<>* node)
         }
     }
 
-    // Finally, return a Tileset from all of the data we've collected for this tile set entry
-    return Tileset {
-        attr<int>(node, "firstgid"),
-        tilewidth,
-        tileheight,
-        tilecount,
-        columns,
-        name,
-        image,
-        tiles,
-        wangset_list,
-        extract<PropertyMap>(node)
-    };
+    // Finally, add a Tileset from all of the data we've collected for this tile set entry
+    tilesets.insert(
+        std::pair<const int, const Tileset>(
+            first_gid,
+            Tileset {
+                first_gid,
+                tilewidth,
+                tileheight,
+                tilecount,
+                columns,
+                name,
+                image,
+                tiles,
+                wangset_list,
+                extract<PropertyMap>(node)
+            }
+        )
+    );
 }
-const TileLayer newTileLayer(rx::xml_node<>* node)
+void newTileLayer(rx::xml_node<>* node, LayerList& layers)
 {
     // todo
 }
-const ObjectLayer newObjectLayer(rx::xml_node<>* node)
+void newObjectLayer(rx::xml_node<>* node, LayerList& layers)
 {
     // todo
 }
-const GroupedLayer newGroupedLayer(rx::xml_node<>* node)
+void newGroupedLayer(rx::xml_node<>* node, LayerList& layers)
 {
     std::vector<const Layer> sublayers;
     rx::xml_node<> *sub_layer = node->first_node();
     while(sub_layer) {
         std::string type = std::string(sub_layer->name());
         if (type == "layer") {
-            sublayers.push_back(newTileLayer(node));
+            newTileLayer(node, layers);
         } else if (type == "objectgroup") {
-            sublayers.push_back(newObjectLayer(node));
+            newObjectLayer(node, layers);
         } else if (type == "group") {
-            sublayers.push_back(newGroupedLayer(node));
+            newGroupedLayer(node, layers);
         } else {
             printf("Warning: unknown layer type: %s\n", type.c_str());
         }
         node = node->next_sibling();
     }
-    return GroupedLayer(
+    layers.push_back(
+        GroupedLayer(
             attr<int>(node, "id"),
             attr_if<const char*>(node, "name"),
             sublayers
-        );
+        )
+    );
 }

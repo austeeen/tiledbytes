@@ -1,7 +1,6 @@
 #ifndef TB_WANGSETS_HPP
 #define TB_WANGSETS_HPP
 
-#include "common.hpp"
 #include "tiled_util.hpp"
 #include "typedefs.hpp"
 

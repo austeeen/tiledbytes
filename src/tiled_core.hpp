@@ -79,7 +79,7 @@ struct Tmx {
     std::string name;
     int width, height, tilewidth, tileheight;
     TilesetMap tilesets;
-    std::vector<Layer> layers;
+    LayerList layers;
     PropertyMap properties;
 };
 

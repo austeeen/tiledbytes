@@ -1,18 +1,18 @@
 #ifndef TB_TMX_HPP
 #define TB_TMX_HPP
 
-#include "tiled_util.hpp"
-#include "tiled_core.hpp"
+#include "common.hpp"
+#include "typedefs.hpp"
 
-void loadTmx(const char *filename);
+void loadTmx(const char *filename, Tmx& usr_tmx);
 
 
-const Tileset newTileset(rx::xml_node<>* node);
+void newTileset(rx::xml_node<>* node, TilesetMap& tilesets);
 
-const TileLayer newTileLayer(rx::xml_node<>* node);
+void newTileLayer(rx::xml_node<>* node, LayerList& layers);
 
-const ObjectLayer newObjectLayer(rx::xml_node<>* node);
+void newObjectLayer(rx::xml_node<>* node, LayerList& layers);
 
-const GroupedLayer newGroupedLayer(rx::xml_node<>* node);
+void newGroupedLayer(rx::xml_node<>* node, LayerList& layers);
 
 #endif // TB_TSX_HPP
