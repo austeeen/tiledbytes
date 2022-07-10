@@ -1,69 +1,18 @@
 #ifndef TB_TMX_HPP
 #define TB_TMX_HPP
 
-#include "common.hpp"
+#include "tiled_util.hpp"
+#include "tiled_core.hpp"
 
-struct Property {
-    const char *name, *type, *value;
-};
+void loadTmx(const char *filename);
 
-typedef std::map<const char*, Property> PropertyMap;
 
-template <class T>
-struct Rect {
-    const int id, gid;
-    const T x, y, width, height;
-    const char *name, *type;
-    PropertyMap properties;
-};
+const Tileset newTileset(rx::xml_node<>* node);
 
-template <class T>
-struct Tile {
-    const char* type;
-    std::vector<Rect<T>> rects;
-    PropertyMap properties;
-};
+const TileLayer newTileLayer(rx::xml_node<>* node);
 
-struct ImageSource {
-    const char* source;
-    const int width, height;
-};
+const ObjectLayer newObjectLayer(rx::xml_node<>* node);
 
-struct Wangset {
-    const char* name, type;
-    std::map<const int, const int> wangtiles;
-};
-
-struct Tileset {
-    const int id, firstgid, width, height, count, columns;
-    const char* name;
-    std::vector<Tile> tiles;
-    std::vector<Wangset> wangsets;
-    PropertyMap properties;
-};
-
-struct Layer {
-    const int id;
-    const char* name;
-    PropertyMap properties;
-};
-
-struct TileLayer: Layer {
-    int tiles*;
-    const int width, height;
-};
-
-struct ObjectLayer: Layer {
-    std::vector<Rect> layers;
-};
-
-struct LayerGroup: Layer {
-    std::vector<Layer> layers;
-};
-
-struct Tmx {
-    std::vector<Layer> layers;
-    PropertyMap properties;
-};
+const GroupedLayer newGroupedLayer(rx::xml_node<>* node);
 
 #endif // TB_TSX_HPP
