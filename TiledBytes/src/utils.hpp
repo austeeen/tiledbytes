@@ -1,7 +1,7 @@
 #ifndef TB_UTIL_HPP
 #define TB_UTIL_HPP
 
-#include "common.hpp"
+#include "core.hpp"
 
 void loadXml(const char *fp, std::string &content, rx::xml_document<>* doc);
 

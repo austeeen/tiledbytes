@@ -1,6 +1,7 @@
-#ifndef COMMON_INC
-#define COMMON_INC
+#ifndef CORE_INC_HPP
+#define CORE_INC_HPP
 
+// C++ STL
 #include <cmath>
 #include <cstdint>
 #include <iostream>
@@ -10,9 +11,11 @@
 #include <sstream>
 #include <vector>
 
-#include "rapidxml/rapidxml.hpp"
+// Xml parser lib
+#include "../rapidxml/rapidxml.hpp"
 namespace rx = rapidxml;
 
+// C STL -- easily gets type name from a class T
 #include <cxxabi.h>
 template<class T> const char* asTypeName()
 {
@@ -35,5 +38,9 @@ template<class T> const char* asTypeName()
 
     return type_name;
 }
+
+// TiledBytes public API objects/typedefs/functions
+#include "../include/tiledbytes.hpp"
+
 
 #endif // COMMON_INC

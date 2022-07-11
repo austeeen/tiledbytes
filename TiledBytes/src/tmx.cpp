@@ -1,7 +1,4 @@
 #include "tmx.hpp"
-#include "tiled_util.hpp"
-#include "tiled_core.hpp"
-#include "extractors.hpp"
 
 void loadTmx(const char *filepath, Tmx& usr_tmx)
 {

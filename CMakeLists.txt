@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(TestTiledBytes)
+# mkdir build
+# cd build
+# cmake ..
+# cmake --build .
+
+project(TiledBytesExamples)
 
 add_subdirectory(TiledBytes)
 
-add_executable(tiledbytes_test.app tests/test.cpp)
+add_executable(example0.app example/test.cpp)
 
-target_link_libraries(tiledbytes_test.app PUBLIC TiledBytes)
+target_link_libraries(example0.app TiledBytesLib)
 
-# add the binary tree to the search path for include files
-# so that we will find TutorialConfig.h
-target_include_directories(tiledbytes_test.app
-    PUBLIC
-    "${PROJECT_BINARY_DIR}"
-    "${PROJECT_SOURCE_DIR}/TiledBytes")
+# target_include_directories(tiledbytes_test.app PUBLIC "${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/TiledBytes")
 
-install(TARGETS TestTiledBytes DESTINATION bin)
+# install(TARGETS example0.app DESTINATION bin)
