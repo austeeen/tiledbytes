@@ -12,7 +12,7 @@
 #include <vector>
 
 // Xml parser lib
-#include "../rapidxml/rapidxml.hpp"
+#include "../../deps/rapidxml/rapidxml.hpp"
 namespace rx = rapidxml;
 
 // C STL -- easily gets type name from a class T

@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-# mkdir build
-# cd build
-# cmake ..
-# cmake --build .
 
 project(TiledBytesExamples)
 

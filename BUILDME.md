@@ -7,6 +7,9 @@
 
 ---
 
-# Build (Shared)
+# Build
 
-    mkdir build && cmake .. && make install
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build .
