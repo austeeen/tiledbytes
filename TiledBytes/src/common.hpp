@@ -10,7 +10,7 @@
 #include <sstream>
 #include <vector>
 
-#include "../deps/rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml.hpp"
 namespace rx = rapidxml;
 
 #include <cxxabi.h>

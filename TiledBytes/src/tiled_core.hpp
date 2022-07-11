@@ -69,10 +69,10 @@ struct ObjectLayer: Layer {
 };
 
 struct GroupedLayer: Layer {
-    GroupedLayer(const int id, const char* name, std::vector<const Layer> sublayers):
+    GroupedLayer(const int id, const char* name, const LayerList sublayers):
         Layer(id, name), sublayers(sublayers)
     {};
-    std::vector<const Layer> sublayers;
+    LayerList sublayers;
 };
 
 struct Tmx {

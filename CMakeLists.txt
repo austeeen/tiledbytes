@@ -1,27 +1,18 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(tiledbytes VERSION 0.1.1 DESCRIPTION "A lightweight API for Tiled Map Editor files in C++")
+project(TestTiledBytes)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-Wall -ggdb3")
-set(CMAKE_BUILD_TYPE Debug)
+add_subdirectory(TiledBytes)
 
-add_library(${PROJECT_NAME} SHARED
-    src/tiled_util.cpp
-    src/tmx.cpp
-    src/wangsets.cpp
-)
+add_executable(tiledbytes_test.app tests/test.cpp)
 
-set_target_properties(${PROJECT_NAME}
-    PROPERTIES
-        VERSION ${PROJECT_VERSION}
-        SOVERSION 1
-        PUBLIC_HEADER include/tiledbytes.hpp
-)
+target_link_libraries(tiledbytes_test.app PUBLIC TiledBytes)
 
-target_include_directories(${PROJECT_NAME} PRIVATE src)
+# add the binary tree to the search path for include files
+# so that we will find TutorialConfig.h
+target_include_directories(tiledbytes_test.app
+    PUBLIC
+    "${PROJECT_BINARY_DIR}"
+    "${PROJECT_SOURCE_DIR}/TiledBytes")
 
-install(TARGETS ${PROJECT_NAME}
-    LIBRARY       DESTINATION lib/${PROJECT_NAME}
-    PUBLIC_HEADER DESTINATION lib/include/${PROJECT_NAME}
-)
+install(TARGETS TestTiledBytes DESTINATION bin)

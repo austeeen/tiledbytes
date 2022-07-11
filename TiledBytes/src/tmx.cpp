@@ -156,16 +156,16 @@ void newObjectLayer(rx::xml_node<>* node, LayerList& layers)
 }
 void newGroupedLayer(rx::xml_node<>* node, LayerList& layers)
 {
-    std::vector<const Layer> sublayers;
+    LayerList sublayers;
     rx::xml_node<> *sub_layer = node->first_node();
     while(sub_layer) {
         std::string type = std::string(sub_layer->name());
         if (type == "layer") {
-            newTileLayer(node, layers);
+            newTileLayer(node, sublayers);
         } else if (type == "objectgroup") {
-            newObjectLayer(node, layers);
+            newObjectLayer(node, sublayers);
         } else if (type == "group") {
-            newGroupedLayer(node, layers);
+            newGroupedLayer(node, sublayers);
         } else {
             printf("Warning: unknown layer type: %s\n", type.c_str());
         }

@@ -20,9 +20,9 @@ typedef std::map<const char*, const Property> PropertyMap;
 typedef std::map<const int,   const Rect>     RectMap;
 typedef std::map<const int,   const Tileset>  TilesetMap;
 typedef std::map<const int,   const Wangtile> WangtileMap;
-typedef std::vector<const Layer>   LayerList;
-typedef std::vector<const Rect>    RectList;
-typedef std::vector<const Tile>    Tilelist;
-typedef std::vector<const Wangset> WangsetList;
+typedef std::vector<Layer>   LayerList;
+typedef std::vector<Rect>    RectList;
+typedef std::vector<Tile>    Tilelist;
+typedef std::vector<Wangset> WangsetList;
 
 #endif // TB_TYPEDEFS_HPP
