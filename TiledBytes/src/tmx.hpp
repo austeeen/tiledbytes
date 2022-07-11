@@ -1,8 +1,10 @@
 #ifndef TB_TMX_HPP
 #define TB_TMX_HPP
 
-#include "common.hpp"
-#include "typedefs.hpp"
+#include "core.hpp"
+#include "utils.hpp"
+#include "extractors.hpp"
+#include "wangsets.hpp"
 
 void loadTmx(const char *filename, Tmx& usr_tmx);
 

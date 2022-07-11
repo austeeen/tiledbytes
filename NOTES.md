@@ -16,7 +16,7 @@ create CMakeLists.txt:
 
 `install` tells cmake to install our binary into the bin directory of the install directory.
 
-## Building
+## Building + Installing
 
 All compiled code can go into a separate build directory.
 
@@ -24,25 +24,27 @@ create build/
 
     cmake ..
 
-Generates build scripts using the default generator — on Linux/OSX this should be Makefiles.
+    helpful options:
+     -DCMAKE_BUILD_TYPE=Debug
+     -DCMAKE_INSTALL_PREFIX=../install
 
-    make
-    make install
+then
 
+    cmake --build .
 
-## Installing
-
-Cmake can install the build into the system directories (default).
-
-Change this with:
-
-    cmake .. -DCMAKE_INSTALL_PREFIX=../install
-
-Run the installed binary:
+and run like so:
 
     ../install/bin/myapp
 
 ## Libs
+
+Things that can be addressed through Cmake:
+ - what parts of the library should it install
+   - where do those parts get installed to
+ - how other apps can find the library
+   - using in-tree sources
+   - using as a pre-built and/or external dependency
+ - will it be static or shared
 
 ### Static
 

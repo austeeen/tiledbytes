@@ -1,9 +1,9 @@
 #include <iostream>
-#include "tiledbytes.hpp"
+#include <tiledbytes.hpp>
 
 
 int main(int argc, char **arv)
 {
-    printf("test.cpp: %s", flag);
+    printf("test.cpp: %s\n", flag);
     return 0;
 };

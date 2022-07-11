@@ -1,8 +1,7 @@
 #ifndef TB_EXTRACTORS_HPP
 #define TB_EXTRACTORS_HPP
 
-#include "common.hpp"
-#include "tiled_core.hpp"
+#include "core.hpp"
 
 template <class T> void extract(const rx::xml_node<>* node, T& container) {
     printf("Error: Invalid type '%s' used to get rects from object group\n", asTypeName<T>());
