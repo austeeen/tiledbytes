@@ -3,6 +3,8 @@
 
 #include "core.hpp"
 
+namespace tb
+{
 void loadXml(const char *fp, std::string &content, rx::xml_document<>* doc);
 
 template <class T>
@@ -69,5 +71,7 @@ template <> const char* attr_if(const rx::xml_node<> *n, const char* key)
     }
     return n_attr->value();
 };
+
+} // namespace tb
 
 #endif // TB_UTIL_HPP

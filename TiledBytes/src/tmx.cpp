@@ -1,5 +1,8 @@
 #include "tmx.hpp"
 
+namespace tb
+{
+
 void loadTmx(const char *filepath, Tmx& usr_tmx)
 {
     rx::xml_document<>* doc = new rx::xml_document<>();
@@ -176,3 +179,5 @@ void newGroupedLayer(rx::xml_node<>* node, LayerList& layers)
         )
     );
 }
+
+} // namespace tb

@@ -3,6 +3,9 @@
 
 #include "core.hpp"
 
+namespace tb
+{
+
 template <class T> void extract(const rx::xml_node<>* node, T& container) {
     printf("Error: Invalid type '%s' used to get rects from object group\n", asTypeName<T>());
 };
@@ -70,5 +73,6 @@ template <> void extract(const rx::xml_node<>* node, RectList& container) {
     }
 };
 
+} // namespace tb
 
 #endif // TB_EXTRACTORS_HPP

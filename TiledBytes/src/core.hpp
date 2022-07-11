@@ -43,4 +43,4 @@ template<class T> const char* asTypeName()
 #include "../include/tiledbytes.hpp"
 
 
-#endif // COMMON_INC
+#endif // CORE_INC_HPP

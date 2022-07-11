@@ -1,5 +1,11 @@
 #include "wangsets.hpp"
 
+namespace tb
+{
+EdgeSet {"edge",   4, 0, 4};
+CornerSet {"corner", 4, 1, 4};
+FullSet   {"full",   8, 0, 2};
+
 void asSet(rx::xml_node<>* node, WangtileMap& map, WangsetMeta& setmeta)
 {
     for (rx::xml_node<> *wtile = node->first_node("wangtile"); wtile; wtile = wtile->next_sibling("wangtile"))
@@ -48,3 +54,5 @@ const Wangset newWangset(rx::xml_node<>* node)
         map
     };
 }
+
+} // namespace tb

@@ -1,5 +1,8 @@
 #include "utils.hpp"
 
+namespace tb
+{
+
 void loadXml(const char *fp, std::string &content, rx::xml_document<>* doc)
 {
     std::ifstream file(fp);
@@ -31,3 +34,5 @@ bool stob(const std::string& str)
     }
     throw std::invalid_argument(str);
 }
+
+} // namespace tb
