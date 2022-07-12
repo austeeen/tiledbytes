@@ -28,7 +28,6 @@ namespace tb
     } // namespace ERR
 
 extern uint8_t ERRCODE;
-extern const char *flag;
 
 // Forward declarations
 struct Layer;
@@ -123,12 +122,6 @@ struct Tmx {
     PropertyMap properties;
 };
 
-/*
- Some of this can be esoteric as I have to work with various dictions/definitions of the
- 'wang tile' concept(s)
- I recommend reading through the 'Wangsets' entry in the README for more info/details
-*/
-
 struct WangsetMeta {
     const char *type; const int total, offset, comma_skip;
 };
@@ -154,6 +147,8 @@ struct Wangset {
 
 
 void loadTmx(const char *filename, Tmx& usr_tmx);
+
+void loadTsx(const char *filename, Tmx& usr_tsx);
 
 
 } // namespace tb

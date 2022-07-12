@@ -7,9 +7,9 @@ WangsetMeta EdgeSet   {"edge",   4, 0, 4};
 WangsetMeta CornerSet {"corner", 4, 1, 4};
 WangsetMeta FullSet   {"full",   8, 0, 2};
 
-void asSet(rx::xml_node<>* node, WangtileMap& map, WangsetMeta& setmeta)
+void asSet(XmlNode* node, WangtileMap& map, WangsetMeta& setmeta)
 {
-    for (rx::xml_node<> *wtile = node->first_node("wangtile"); wtile; wtile = wtile->next_sibling("wangtile"))
+    for (XmlNode *wtile = node->first_node("wangtile"); wtile; wtile = wtile->next_sibling("wangtile"))
     {
         const char* wang_id_str = attr<const char*>(wtile, "wangid");
         int wang_id = 0;
@@ -34,13 +34,13 @@ void asSet(rx::xml_node<>* node, WangtileMap& map, WangsetMeta& setmeta)
     }
 }
 
-inline void asEdgeSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, EdgeSet); };
+inline void asEdgeSet(XmlNode* node, WangtileMap& map) { asSet(node, map, EdgeSet); };
 
-inline void asCornerSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, CornerSet); };
+inline void asCornerSet(XmlNode* node, WangtileMap& map) { asSet(node, map, CornerSet); };
 
-inline void asFullSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, FullSet); };
+inline void asFullSet(XmlNode* node, WangtileMap& map) { asSet(node, map, FullSet); };
 
-const Wangset newWangset(rx::xml_node<>* node)
+const Wangset newWangset(XmlNode* node)
 {
     std::string type = std::string(attr<const char*>(node, "type"));
 

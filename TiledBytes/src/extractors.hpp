@@ -2,21 +2,22 @@
 #define TB_EXTRACTORS_HPP
 
 #include "core.hpp"
+#include "utils.hpp"
 
 namespace tb
 {
 
-template <class T> void extract(const rx::xml_node<>* node, T& container) {
+template <class T> void extract(const XmlNode* node, T& container) {
     printf("Error: Invalid type '%s' used to get rects from object group\n", asTypeName<T>());
 };
 
-template <class T> const T extract(const rx::xml_node<>* node) {
+template <class T> const T extract(const XmlNode* node) {
     T container;
     extract<T>(node, container);
     return container;
 }
 
-inline Property _newProperty(const rx::xml_node<> *n)
+inline Property _newProperty(const XmlNode *n)
 {
     return Property {
         attr_if<const char*>(n, "name"),
@@ -25,7 +26,7 @@ inline Property _newProperty(const rx::xml_node<> *n)
     };
 }
 
-inline Rect _newRect(const rx::xml_node<> *n)
+inline Rect _newRect(const XmlNode *n)
 {
     return Rect {
         attr_if<int>(n, "id"),
@@ -40,8 +41,8 @@ inline Rect _newRect(const rx::xml_node<> *n)
     };
 }
 
-template <> void extract(const rx::xml_node<>* node, PropertyMap& container) {
-    rx::xml_node<> *n = node->first_node("property");
+template <> void extract(const XmlNode* node, PropertyMap& container) {
+    XmlNode *n = node->first_node("property");
     while(n != nullptr) {
         container.insert(std::pair<const char*, const Property>(
             attr<const char*>(n, "name"),
@@ -51,10 +52,10 @@ template <> void extract(const rx::xml_node<>* node, PropertyMap& container) {
     }
 };
 
-template <> void extract(const rx::xml_node<>* node, RectMap& container) {
-    rx::xml_node<> *og = node->first_node("objectgroup");
+template <> void extract(const XmlNode* node, RectMap& container) {
+    XmlNode *og = node->first_node("objectgroup");
     if (og) {
-        rx::xml_node<> *obj = og->first_node("object");
+        XmlNode *obj = og->first_node("object");
         while(obj != nullptr) {
             container.insert(std::pair<const int, Rect>(attr<int>(node, "id"), _newRect(obj)));
             obj = obj->next_sibling();
@@ -62,10 +63,10 @@ template <> void extract(const rx::xml_node<>* node, RectMap& container) {
     }
 };
 
-template <> void extract(const rx::xml_node<>* node, RectList& container) {
-    rx::xml_node<> *og = node->first_node("objectgroup");
+template <> void extract(const XmlNode* node, RectList& container) {
+    XmlNode *og = node->first_node("objectgroup");
     if (og) {
-        rx::xml_node<> *obj = og->first_node("object");
+        XmlNode *obj = og->first_node("object");
         while(obj != nullptr) {
             container.push_back(_newRect(obj));
             obj = obj->next_sibling();

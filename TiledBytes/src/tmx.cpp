@@ -14,13 +14,13 @@ void loadTmx(const char *filepath, Tmx& usr_tmx)
         return;
     }
 
-    rx::xml_node<> *map = doc->first_node();
+    XmlNode *map = doc->first_node();
     usr_tmx.width = attr<int>(map, "width");
     usr_tmx.height = attr<int>(map, "height");
     usr_tmx.tilewidth = attr<int>(map, "tilewidth");
     usr_tmx.tileheight = attr<int>(map, "tileheight");
 
-    rx::xml_node<> *node = map->first_node();
+    XmlNode *node = map->first_node();
     while(node) {
         std::string type = std::string(node->name());
         if (type == "tileset") {
@@ -39,9 +39,9 @@ void loadTmx(const char *filepath, Tmx& usr_tmx)
     delete doc;
 }
 
-const Image _newImageSource(rx::xml_node<>* node, const char* node_name)
+const Image _newImageSource(XmlNode* node, const char* node_name)
 {
-    rx::xml_node<> *img_node = node->first_node("image");
+    XmlNode *img_node = node->first_node("image");
     if (!img_node) {
         printf("Warning: tileset %s has no image source\n", node_name);
         return Image{};
@@ -53,7 +53,7 @@ const Image _newImageSource(rx::xml_node<>* node, const char* node_name)
     };
 }
 
-void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
+void newTileset(XmlNode* node, TilesetMap& tilesets)
 {
     // Get basic attributes about this tileset -- to be used to generate this Tilesets' member data
     // by the subroutines herein
@@ -70,11 +70,11 @@ void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
 
 
     // Create a map of entries in the tileset so we can look up information about the tile later on.
-    std::map<const int, rx::xml_node<>*> tileset_entries;
-    for (rx::xml_node<> *tnode = node->first_node("tile"); tnode; tnode = tnode->next_sibling()) {
+    std::map<const int, XmlNode*> tileset_entries;
+    for (XmlNode *tnode = node->first_node("tile"); tnode; tnode = tnode->next_sibling()) {
         if (std::string(tnode->name()) == "tile") {
             tileset_entries.insert(
-                std::pair< const int, rx::xml_node<>* >(attr<int>(tnode, "id"), tnode)
+                std::pair< const int, XmlNode* >(attr<int>(tnode, "id"), tnode)
             );
         }
     }
@@ -99,7 +99,7 @@ void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
 
         // If the tile is in our tileset entry map, then include any information in the map entry.
         if (tileset_entries.count(i) != 0) {
-            rx::xml_node<> *tile_entry = tileset_entries.at(i);
+            XmlNode *tile_entry = tileset_entries.at(i);
             tiles.push_back(Tile {
                 i,
                 p_rect,
@@ -121,9 +121,9 @@ void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
 
     // Collect any wang sets
     WangsetList wangset_list;
-    rx::xml_node<> *ws = node->first_node("wangsets");
+    XmlNode *ws = node->first_node("wangsets");
     if (ws) {
-        for (rx::xml_node<> *wn = ws->first_node("wangset"); wn; wn = wn->next_sibling("wangset")) {
+        for (XmlNode *wn = ws->first_node("wangset"); wn; wn = wn->next_sibling("wangset")) {
             wangset_list.push_back(newWangset(wn));
         }
     }
@@ -147,13 +147,13 @@ void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
         )
     );
 }
-void newTileLayer(rx::xml_node<>* node, LayerList& layers, const int tilewidth, const int tileheight)
+void newTileLayer(XmlNode* node, LayerList& layers, const int tilewidth, const int tileheight)
 {
     const int width = attr<int>(node, "width");
     const int height = attr<int>(node, "height");
 
     std::vector<int> allgids;
-    rx::xml_node<> *data = node->first_node("data");
+    XmlNode *data = node->first_node("data");
     split(std::string(data->value()), ',', allgids);
 
     RectList allrects;
@@ -180,7 +180,7 @@ void newTileLayer(rx::xml_node<>* node, LayerList& layers, const int tilewidth, 
         allrects
     ));
 }
-void newObjectLayer(rx::xml_node<>* node, LayerList& layers)
+void newObjectLayer(XmlNode* node, LayerList& layers)
 {
     layers.push_back(ObjectLayer(
         attr<int>(node, "id"),
@@ -188,10 +188,10 @@ void newObjectLayer(rx::xml_node<>* node, LayerList& layers)
         extract<RectMap>(node)
     ));
 }
-void newGroupedLayer(rx::xml_node<>* node, LayerList& layers, const int width, const int height)
+void newGroupedLayer(XmlNode* node, LayerList& layers, const int width, const int height)
 {
     LayerList sublayers;
-    rx::xml_node<> *sub_layer = node->first_node();
+    XmlNode *sub_layer = node->first_node();
     while(sub_layer) {
         std::string type = std::string(sub_layer->name());
         if (type == "layer") {
