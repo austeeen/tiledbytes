@@ -13,7 +13,12 @@
 
 // Xml parser lib
 #include "../../deps/rapidxml/rapidxml.hpp"
+
+// As per my own personal 'coding ethics' I try not to mangle up type declarations of code that
+// isn't mine. However this namespace and the xml_node class is used so often that I can justify it
+// with proper documentation.
 namespace rx = rapidxml;
+typedef rx::xml_node<> XmlNode;
 
 // C STL -- easily gets type name from a class T
 #include <cxxabi.h>

@@ -23,7 +23,7 @@ bool stob(const std::string& str)
     throw std::invalid_argument(str);
 }
 
-template <> bool attr(const rx::xml_node<> *n, const char *key)
+template <> bool attr(const XmlNode *n, const char *key)
 {
     rx::xml_attribute<> *n_attr = n->first_attribute(key);
     if (n_attr == nullptr) {
@@ -32,7 +32,7 @@ template <> bool attr(const rx::xml_node<> *n, const char *key)
     return stob(std::string(n_attr->value()));
 }
 
-template <> const char* attr(const rx::xml_node<> *n, const char* key)
+template <> const char* attr(const XmlNode *n, const char* key)
 {
     rx::xml_attribute<> *n_attr = n->first_attribute(key);
     if (n_attr == nullptr) {
@@ -41,7 +41,7 @@ template <> const char* attr(const rx::xml_node<> *n, const char* key)
     return n_attr->value();
 }
 
-template <> bool attr_if(const rx::xml_node<> *n, const char* key)
+template <> bool attr_if(const XmlNode *n, const char* key)
 {
     rx::xml_attribute<> *n_attr = n->first_attribute(key);
     if (n_attr == nullptr) {
@@ -50,7 +50,7 @@ template <> bool attr_if(const rx::xml_node<> *n, const char* key)
     return stob(std::string(n_attr->value()));
 }
 
-template <> const char* attr_if(const rx::xml_node<> *n, const char* key)
+template <> const char* attr_if(const XmlNode *n, const char* key)
 {
     rx::xml_attribute<> *n_attr = n->first_attribute(key);
     if (n_attr == nullptr) {

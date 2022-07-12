@@ -1,13 +1,51 @@
-# tiledbytes
-A lightweight API for Tiled Map Editor files in C++
+# Caution
 
-## Wangsets
-Tiled Map Editor supports edge, corner, and edge + corner wang sets and will encode all
-possible orientations of every wang set into a comma separated char string
-The 'wangid' entry this encoded char string.
-Integer chars, at specific indexes, are used to denote the wang tile's identity.
-         Edge Wang sets: "a,0,c,0,e,0,g,0"
-       Corner Wang sets: "0,b,0,d,0,f,0,h"
-Corner + Edge Wang sets: "a,b,c,d,e,f,g,h"
-0 essentially means "ignored"
-Entries take on an integer value: 0 < n <= (# wang colors)
+This project is in development! All code herein is experimental and not recommended for production!
+However, feel free to clone/fork/copy/etc and give feedback.
+
+# TiledBytes can...
+
+ - Read in Tiled Map Editor project files and produce very primitive corresponding C++ objects
+ - Get you started using Tiled Map Editor project files in your C++ project.
+ - Serve as a jumping board for more robust and advanced usage of the Tiled Map Editor and 2D game
+   design.
+ - Be used in your own C++ project very quickly and easily.
+ - Be intuitive and easily understood by all Tiled Map Editor users.
+ - Be informative or used to learn more about Tiled Map Editor and 2D game dev.
+
+# TiledBytes cannot...
+
+ - Create or write to Tiled Map Editor project files.
+ - Teach a user absolutely everything they need to know to begin their journey with either Tiled Map
+   Editor or 2D game design.
+ - Perform any graphical processing or rendering.
+ - Serve alone as a fully featured game dev library.
+ - Be considered useful for 3D or isometric game development. (although this could be done!)
+
+# RapidXml...
+
+is not my own project or code. I do not claim ownership or copyrights to the rapidxml library.
+RapidXml is used by TiledBytes within its permissions stated in rapidxml/license.txt, 
+
+# The road to release
+
+I'm currently still building out this API. Tmx files seem to be working and Tsx files are on the
+way. I am also working to put together a much more robust testing framework which I'll use to pump
+out comprehensive tests. Might even get freaky and add some git workflows to the mess.
+
+### What to expect in due time...
+
+I'm thinking once the following are implemented/tested/complete I will tag an official 'v1' release:
+ - Tmx/tsx API implemented
+ - Build/install options and configurations
+ - Cross-platform support
+ - Comprehensive test cases
+ - Code documented and cleaned up
+ - API/Build/Usage docs
+
+### Author
+
+Austin Herman
+austinherman868@gmail.com
+
+Feel free to contact me through email anytime!

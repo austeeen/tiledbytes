@@ -9,13 +9,13 @@
 namespace tb
 {
 
-void newTileset(rx::xml_node<>* node, TilesetMap& tilesets);
+void newTileset(XmlNode* node, TilesetMap& tilesets);
 
-void newTileLayer(rx::xml_node<>* node, LayerList& layers, const int width, const int height);
+void newTileLayer(XmlNode* node, LayerList& layers, const int width, const int height);
 
-void newObjectLayer(rx::xml_node<>* node, LayerList& layers);
+void newObjectLayer(XmlNode* node, LayerList& layers);
 
-void newGroupedLayer(rx::xml_node<>* node, LayerList& layers, const int width, const int height);
+void newGroupedLayer(XmlNode* node, LayerList& layers, const int width, const int height);
 
 } // namespace tb
 

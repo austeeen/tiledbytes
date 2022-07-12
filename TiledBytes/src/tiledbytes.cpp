@@ -4,7 +4,6 @@ namespace tb
 {
 
 uint8_t ERRCODE = ERR::CODE::NONE;
-const char *flag = "it works!";
 
 Layer::Layer(const int id, const char* name):
     id(id),
