@@ -9,6 +9,7 @@ target_sources(${PROJECT_NAME}
         src/tiledbytes.cpp
         src/utils.cpp
         src/tmx.cpp
+        src/tsx.cpp
         src/wangsets.cpp)
 
 target_include_directories(${PROJECT_NAME}

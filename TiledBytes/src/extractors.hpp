@@ -41,9 +41,14 @@ inline Rect _newRect(const XmlNode *n)
     };
 }
 
-template <> void extract(const XmlNode* node, PropertyMap& container) {
-    XmlNode *n = node->first_node("property");
-    while(n != nullptr) {
+template <> void extract(const XmlNode* node, PropertyMap& container)
+{
+    XmlNode *prps = node->first_node("properties");
+    if (!prps) {
+        return;
+    }
+    XmlNode *n = prps->first_node("property");
+    while(n) {
         container.insert(std::pair<const char*, const Property>(
             attr<const char*>(n, "name"),
             _newProperty(n)
@@ -52,25 +57,29 @@ template <> void extract(const XmlNode* node, PropertyMap& container) {
     }
 };
 
-template <> void extract(const XmlNode* node, RectMap& container) {
+template <> void extract(const XmlNode* node, RectMap& container)
+{
     XmlNode *og = node->first_node("objectgroup");
-    if (og) {
-        XmlNode *obj = og->first_node("object");
-        while(obj != nullptr) {
-            container.insert(std::pair<const int, Rect>(attr<int>(node, "id"), _newRect(obj)));
-            obj = obj->next_sibling();
-        }
+    if (!og) {
+        return;
+    }
+    XmlNode *obj = og->first_node("object");
+    while(obj != nullptr) {
+        container.insert(std::pair<const int, Rect>(attr<int>(node, "id"), _newRect(obj)));
+        obj = obj->next_sibling();
     }
 };
 
-template <> void extract(const XmlNode* node, RectList& container) {
+template <> void extract(const XmlNode* node, RectList& container)
+{
     XmlNode *og = node->first_node("objectgroup");
-    if (og) {
-        XmlNode *obj = og->first_node("object");
-        while(obj != nullptr) {
-            container.push_back(_newRect(obj));
-            obj = obj->next_sibling();
-        }
+    if (!og) {
+        return;
+    }
+    XmlNode *obj = og->first_node("object");
+    while(obj != nullptr) {
+        container.push_back(_newRect(obj));
+        obj = obj->next_sibling();
     }
 };
 

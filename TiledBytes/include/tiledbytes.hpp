@@ -30,26 +30,31 @@ namespace tb
 extern uint8_t ERRCODE;
 
 // Forward declarations
+struct Frame;
 struct Layer;
 struct Property;
 struct Rect;
 struct Tile;
 struct Tileset;
+struct Tmx;
+struct Tsx;
 struct Wangset;
 struct Wangtile;
-struct Tmx;
 
 // API Types
-typedef std::map<const char*, const Property> PropertyMap;
-typedef std::map<const int,   const Rect>     RectMap;
-typedef std::map<const int,   const Tileset>  TilesetMap;
-typedef std::map<const int,   const Wangtile> WangtileMap;
 typedef std::vector<Layer>   LayerList;
 typedef std::vector<Rect>    RectList;
 typedef std::vector<Tile>    TileList;
 typedef std::vector<Wangset> WangsetList;
+typedef std::vector<Frame>   FrameList;
+typedef std::map<const char*, const Property> PropertyMap;
+typedef std::map<const int,   const Rect>     RectMap;
+typedef std::map<const int,   const Tileset>  TilesetMap;
+typedef std::map<const int,   const Wangtile> WangtileMap;
+typedef std::map<const int,   const FrameList>     AnimationMap;
 
 // API objects
+
 struct Property {
     const char *name, *type, *value;
 };
@@ -60,6 +65,10 @@ struct PositionRect {
 
 struct TextureRect {
     const int gid, x, y, width, height;
+};
+
+struct Frame {
+    const int tiled_id, duration;
 };
 
 struct Rect {
@@ -79,7 +88,7 @@ struct Tile {
 
 struct Image {
     const char* source;
-    const int width, height;
+    int width, height;
 };
 
 struct Tileset {
@@ -122,6 +131,16 @@ struct Tmx {
     PropertyMap properties;
 };
 
+struct Tsx {
+    int tilewidth, tileheight, tilecount, columns;
+    const char* name;
+    Image image;
+    TileList tiles;
+    AnimationMap animations;
+    PropertyMap properties;
+};
+
+
 struct WangsetMeta {
     const char *type; const int total, offset, comma_skip;
 };
@@ -138,17 +157,17 @@ struct Wangtile {
 };
 
 struct Wangset {
-  const char *name, *type;
-  WangtileMap map;
+    const char *name, *type;
+    WangtileMap map;
 };
 
 
 /**************************************************************************************************/
 
 
-void loadTmx(const char *filename, Tmx& usr_tmx);
+void loadTmx(const char *filepath, Tmx& usr_tmx);
 
-void loadTsx(const char *filename, Tmx& usr_tsx);
+void loadTsx(const char *filepath, Tsx& usr_tsx);
 
 
 } // namespace tb
