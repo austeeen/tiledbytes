@@ -13,6 +13,16 @@ file(GLOB TEST_SOURCES
 
 foreach(src ${TEST_SOURCES})
     get_filename_component(name ${src} NAME_WE)
-    add_executable(${name} ${src})
-    target_link_libraries(${name} TiledBytesLib)
+    add_executable(${name}.app ${src})
+    target_link_libraries(${name}.app TiledBytesLib)
 endforeach(src ${TEST_SOURCES})
+
+file(GLOB RSRCS
+    LIST_DIRECTORIES false
+    CONFIGURE_DEPENDS
+    example/res/*.*)
+
+foreach(rsrc ${RSRCS})
+    file(COPY ${rsrc}
+        DESTINATION ${CMAKE_BINARY_DIR}/res/)
+endforeach(rsrc ${RSRCS})

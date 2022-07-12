@@ -2,9 +2,10 @@
 
 namespace tb
 {
-EdgeSet {"edge",   4, 0, 4};
-CornerSet {"corner", 4, 1, 4};
-FullSet   {"full",   8, 0, 2};
+
+WangsetMeta EdgeSet   {"edge",   4, 0, 4};
+WangsetMeta CornerSet {"corner", 4, 1, 4};
+WangsetMeta FullSet   {"full",   8, 0, 2};
 
 void asSet(rx::xml_node<>* node, WangtileMap& map, WangsetMeta& setmeta)
 {
@@ -32,6 +33,12 @@ void asSet(rx::xml_node<>* node, WangtileMap& map, WangsetMeta& setmeta)
         );
     }
 }
+
+inline void asEdgeSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, EdgeSet); };
+
+inline void asCornerSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, CornerSet); };
+
+inline void asFullSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, FullSet); };
 
 const Wangset newWangset(rx::xml_node<>* node)
 {

@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+cwd=$PWD
+
+quit() {
+    if [[ $cwd != $PWD ]]; then
+        cd $cwd
+    fi
+    exit $1
+}
+
+errcheck() {
+    if [[ $1 -ne 0 ]]; then
+        quit 1
+    fi
+}
+
+usage () {
+    echo "
+-------------------------------------------------------------------------------
+                           ~TiledBytes run script~
+
+./run [OPTIONS]+
+
+description:
+    a script to build TiledBytes and run the test cases / example programs
+
+    ** providing no options will build everything and run each test case
+       equivalent to setting options 'b' and 't'
+
+options:
+    b       | build regularly
+    c       | clear all build files first, then build the app
+    g [app] | same as 'r' but using gdb
+    r [app] | run app in the build dir
+    h       | display this help page
+
+    examples:
+        ./run
+        ./run b
+        ./run a
+        ./run gb [app]
+-------------------------------------------------------------------------------"
+}
+
+# set up defaults
+build_dir="build"
+app=""
+run_cmd="./"
+do_build=0
+do_run=0
+cmake_clean=""
+
+# get the user specified app to run (if any)
+if [[ $# -ge 2 ]]; then
+    app=$2
+else
+    app=test_*.app
+fi
+
+echo $app
+
+build () {
+    mkdir -p build && cd build
+    errcheck $?
+    cmake .. && cmake --build . $cmake_clean
+    errcheck $?
+    cd ..
+}
+
+
+args=($(echo $1 | grep -o .))
+shift
+
+for c in "${args[@]}"; do
+    case $c in
+        a)
+            do_run=1; app="test_*.app";;
+        b)
+            do_build=1;;
+        c)
+            do_build=1; cmake_clean="--clean-first";;
+        g)
+            do_run=1;   run_cmd="gdb ./";;
+        r)
+            do_run=1;   run_cmd="./";;
+        h)
+            usage;;
+        *)
+            echo "bad arg: $c";;
+  esac
+done
+
+if [[ $do_build -eq 1 ]]; then
+    echo "-- building lib"
+    build
+    echo ""
+fi
+
+if [[ $do_run -eq 1 ]]; then
+    echo "-- running apps"
+    cd $build_dir
+    for a in $app; do
+        echo ""
+        echo "----| $a"
+        eval "$run_cmd$a"
+    done
+    cd $cwd
+    echo ""
+fi
+echo "----------------------"
+echo "done."
+
+quit 0

@@ -10,6 +10,7 @@ add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
+        src/tiledbytes.cpp
         src/utils.cpp
         src/tmx.cpp
         src/wangsets.cpp)

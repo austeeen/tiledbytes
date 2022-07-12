@@ -27,6 +27,9 @@ template<class T> T attr(const rx::xml_node<> *n, const char* key)
     return val;
 };
 
+template <> bool attr(const rx::xml_node<> *n, const char *key);
+template <> const char* attr(const rx::xml_node<> *n, const char* key);
+
 template<class T> T attr_if(const rx::xml_node<> *n, const char* key)
 {
     rx::xml_attribute<> *n_attr = n->first_attribute(key);
@@ -39,38 +42,8 @@ template<class T> T attr_if(const rx::xml_node<> *n, const char* key)
     return val;
 };
 
-template <> bool attr(const rx::xml_node<> *n, const char *key)
-{
-    rx::xml_attribute<> *n_attr = n->first_attribute(key);
-    if (n_attr == nullptr) {
-        throw std::out_of_range(key);
-    }
-    return stob(std::string(n_attr->value()));
-};
-template <> const char* attr(const rx::xml_node<> *n, const char* key)
-{
-    rx::xml_attribute<> *n_attr = n->first_attribute(key);
-    if (n_attr == nullptr) {
-        throw std::out_of_range(key);
-    }
-    return n_attr->value();
-};
-template <> bool attr_if(const rx::xml_node<> *n, const char* key)
-{
-    rx::xml_attribute<> *n_attr = n->first_attribute(key);
-    if (n_attr == nullptr) {
-        return false;
-    }
-    return stob(std::string(n_attr->value()));
-};
-template <> const char* attr_if(const rx::xml_node<> *n, const char* key)
-{
-    rx::xml_attribute<> *n_attr = n->first_attribute(key);
-    if (n_attr == nullptr) {
-        return nullptr;
-    }
-    return n_attr->value();
-};
+template <> bool attr_if(const rx::xml_node<> *n, const char* key);
+template <> const char* attr_if(const rx::xml_node<> *n, const char* key);
 
 } // namespace tb
 

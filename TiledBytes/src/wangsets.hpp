@@ -7,19 +7,15 @@
 namespace tb
 {
 
-WangsetMeta EdgeSet;
-WangsetMeta CornerSet;
-WangsetMeta FullSet;
-
 // Iterate over the wangset entry to populate the WangtileMap by determining each entry's wang set
 // tile number.
 void asSet(rx::xml_node<>* node, WangtileMap& map, WangsetMeta& setmeta);
 
-inline void asEdgeSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, EdgeSet); };
+inline void asEdgeSet(rx::xml_node<>* node, WangtileMap& map);
 
-inline void asCornerSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, CornerSet); };
+inline void asCornerSet(rx::xml_node<>* node, WangtileMap& map);
 
-inline void asFullSet(rx::xml_node<>* node, WangtileMap& map) { asSet(node, map, FullSet); };
+inline void asFullSet(rx::xml_node<>* node, WangtileMap& map);
 
 const Wangset newWangset(rx::xml_node<>* node);
 

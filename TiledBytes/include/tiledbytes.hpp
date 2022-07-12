@@ -17,7 +17,18 @@
 
 namespace tb
 {
-extern const char *flag = "it works!";
+    namespace ERR
+    {
+        enum CODE : uint8_t {
+            NONE = 0x0,
+            UNDEFINED,
+            FILE_LOAD_ERROR,
+            FILE_NOT_FOUND
+        };
+    } // namespace ERR
+
+extern uint8_t ERRCODE;
+extern const char *flag;
 
 // Forward declarations
 struct Layer;
@@ -40,11 +51,17 @@ typedef std::vector<Tile>    Tilelist;
 typedef std::vector<Wangset> WangsetList;
 
 // API objects
-struct Property { const char *name, *type, *value; };
+struct Property {
+    const char *name, *type, *value;
+};
 
-struct PositionRect { const int x, y, width, height; };
+struct PositionRect {
+    const int x, y, width, height;
+};
 
-struct TextureRect { const int gid, x, y, width, height; };
+struct TextureRect {
+    const int gid, x, y, width, height;
+};
 
 struct Rect {
     const int id, gid, x, y, width, height;
@@ -94,7 +111,7 @@ struct ObjectLayer: Layer {
 };
 
 struct GroupedLayer: Layer {
-    GroupedLayer(const int id, const char* name, const LayerList sublayers);
+    GroupedLayer(const int id, const char* name, const LayerList& sublayers);
     LayerList sublayers;
 };
 
