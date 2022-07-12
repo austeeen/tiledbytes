@@ -4,8 +4,16 @@
 
 int main(int argc, char **argv)
 {
-    tb::Tmx t{"test"};
-    tb::loadTmx("res/test.tmx", t);
+    tb::Tmx tmx{"test"};
+    tb::loadTmx("res/test.tmx", tmx);
+
+    for (auto& [firstgid, tst] : tmx.tilesets) {
+        printf("tileset [%d] %d -> %s\n", firstgid, tst.firstgid, tst.name);
+    }
+
+    for (auto& lyr : tmx.layers) {
+        printf("layer [%d] %s\n", lyr.id, lyr.name);
+    }
 
     if (tb::ERRCODE == tb::ERR::CODE::NONE) {
         printf("%s complete.\n", argv[0]);

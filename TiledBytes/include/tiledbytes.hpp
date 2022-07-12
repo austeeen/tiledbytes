@@ -47,7 +47,7 @@ typedef std::map<const int,   const Tileset>  TilesetMap;
 typedef std::map<const int,   const Wangtile> WangtileMap;
 typedef std::vector<Layer>   LayerList;
 typedef std::vector<Rect>    RectList;
-typedef std::vector<Tile>    Tilelist;
+typedef std::vector<Tile>    TileList;
 typedef std::vector<Wangset> WangsetList;
 
 // API objects
@@ -87,7 +87,7 @@ struct Tileset {
     const int firstgid, tilewidth, tileheight, tilecount, columns;
     const char* name;
     const Image image;
-    Tilelist tiles;
+    TileList tiles;
     WangsetList wangsets;
     PropertyMap properties;
 };
@@ -100,13 +100,13 @@ struct Layer {
 };
 
 struct TileLayer: Layer {
-    TileLayer(const int id, const char* name, const int w, const int h);
+    TileLayer(const int id, const char* name, const int w, const int h, const RectList& tilerects);
     const int width, height;
-    Tilelist tiles;
+    RectList tilerects;
 };
 
 struct ObjectLayer: Layer {
-    ObjectLayer(const int id, const char* name);
+    ObjectLayer(const int id, const char* name, const RectMap& rects);
     RectMap rects;
 };
 
