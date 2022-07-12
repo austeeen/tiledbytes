@@ -1,14 +1,34 @@
 #ifndef TILED_BYTES_HPP
 #define TILED_BYTES_HPP
 
-/*
- * TiledBytes - A lightweight API for Tiled Map Editor files in C++
- */
+/*************************************************************
+ *                       TiledBytes                          *
+ *    A lightweight API for Tiled Map Editor files in C++    *
+ *              github.com/austeeen/tiledbytes               *
+ *-----------------------------------------------------------*
+ *    Austin Herman                                          *
+ *    austinherman868@gmail.com                              *
+ *************************************************************/
 
+ // todo - document all this
 
-// todo - document all this
-#include <map>
-#include <vector>
+ #include <map>
+ #include <vector>
+
+namespace tb
+{
+    namespace ERR
+    {
+        enum CODE : uint8_t {
+            NONE = 0x0,
+            UNDEFINED,
+            FILE_LOAD_ERROR,
+            FILE_NOT_FOUND
+        };
+    } // namespace ERR
+
+extern uint8_t ERRCODE;
+extern const char *flag;
 
 // Forward declarations
 struct Layer;
@@ -31,11 +51,17 @@ typedef std::vector<Tile>    Tilelist;
 typedef std::vector<Wangset> WangsetList;
 
 // API objects
-struct Property { const char *name, *type, *value; };
+struct Property {
+    const char *name, *type, *value;
+};
 
-struct PositionRect { const int x, y, width, height; };
+struct PositionRect {
+    const int x, y, width, height;
+};
 
-struct TextureRect { const int gid, x, y, width, height; };
+struct TextureRect {
+    const int gid, x, y, width, height;
+};
 
 struct Rect {
     const int id, gid, x, y, width, height;
@@ -85,7 +111,7 @@ struct ObjectLayer: Layer {
 };
 
 struct GroupedLayer: Layer {
-    GroupedLayer(const int id, const char* name, const LayerList sublayers);
+    GroupedLayer(const int id, const char* name, const LayerList& sublayers);
     LayerList sublayers;
 };
 
@@ -105,9 +131,7 @@ struct Tmx {
 
 struct WangsetMeta {
     const char *type; const int total, offset, comma_skip;
-} EdgeSet   {"edge",   4, 0, 4},
-  CornerSet {"corner", 4, 1, 4},
-  FullSet   {"full",   8, 0, 2};
+};
 
 struct Wangtile {
     // tile set id
@@ -125,6 +149,13 @@ struct Wangset {
   WangtileMap map;
 };
 
-const char *flag = "it works!";
+
+/**************************************************************************************************/
+
+
+void loadTmx(const char *filename, Tmx& usr_tmx);
+
+
+} // namespace tb
 
 #endif // TILED_BYTES_HPP

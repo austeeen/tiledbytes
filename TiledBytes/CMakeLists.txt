@@ -10,6 +10,7 @@ add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
+        src/tiledbytes.cpp
         src/utils.cpp
         src/tmx.cpp
         src/wangsets.cpp)
@@ -18,7 +19,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         # where the library itself will look for its internal headers
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/rapidxml
+        ${PROJECT_SOURCE_DIR}/deps
     PUBLIC
         # where top-level project will look for the library's public headers
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

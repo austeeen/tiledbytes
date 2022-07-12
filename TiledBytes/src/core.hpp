@@ -12,7 +12,7 @@
 #include <vector>
 
 // Xml parser lib
-#include "../rapidxml/rapidxml.hpp"
+#include "../../deps/rapidxml/rapidxml.hpp"
 namespace rx = rapidxml;
 
 // C STL -- easily gets type name from a class T
@@ -43,4 +43,4 @@ template<class T> const char* asTypeName()
 #include "../include/tiledbytes.hpp"
 
 
-#endif // COMMON_INC
+#endif // CORE_INC_HPP

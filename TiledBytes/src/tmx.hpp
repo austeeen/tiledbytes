@@ -6,8 +6,8 @@
 #include "extractors.hpp"
 #include "wangsets.hpp"
 
-void loadTmx(const char *filename, Tmx& usr_tmx);
-
+namespace tb
+{
 
 void newTileset(rx::xml_node<>* node, TilesetMap& tilesets);
 
@@ -16,5 +16,7 @@ void newTileLayer(rx::xml_node<>* node, LayerList& layers);
 void newObjectLayer(rx::xml_node<>* node, LayerList& layers);
 
 void newGroupedLayer(rx::xml_node<>* node, LayerList& layers);
+
+} // namespace tb
 
 #endif // TB_TSX_HPP

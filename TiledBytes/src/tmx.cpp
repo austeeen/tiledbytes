@@ -1,5 +1,8 @@
 #include "tmx.hpp"
 
+namespace tb
+{
+
 void loadTmx(const char *filepath, Tmx& usr_tmx)
 {
     rx::xml_document<>* doc = new rx::xml_document<>();
@@ -7,6 +10,7 @@ void loadTmx(const char *filepath, Tmx& usr_tmx)
     loadXml(filepath, content, doc);
     if (doc == nullptr || content == "") {
         printf("Error loading tmx file: %s\n", filepath);
+        ERRCODE = ERR::CODE::FILE_LOAD_ERROR;
         return;
     }
 
@@ -17,7 +21,7 @@ void loadTmx(const char *filepath, Tmx& usr_tmx)
     usr_tmx.tileheight = attr<int>(map, "tileheight");
 
     rx::xml_node<> *node = map->first_node();
-    while(node != nullptr) {
+    while(node) {
         std::string type = std::string(node->name());
         if (type == "tileset") {
             newTileset(node, usr_tmx.tilesets);
@@ -158,15 +162,15 @@ void newGroupedLayer(rx::xml_node<>* node, LayerList& layers)
     while(sub_layer) {
         std::string type = std::string(sub_layer->name());
         if (type == "layer") {
-            newTileLayer(node, sublayers);
+            newTileLayer(sub_layer, sublayers);
         } else if (type == "objectgroup") {
-            newObjectLayer(node, sublayers);
+            newObjectLayer(sub_layer, sublayers);
         } else if (type == "group") {
-            newGroupedLayer(node, sublayers);
+            newGroupedLayer(sub_layer, sublayers);
         } else {
             printf("Warning: unknown layer type: %s\n", type.c_str());
         }
-        node = node->next_sibling();
+        sub_layer = sub_layer->next_sibling();
     }
     layers.push_back(
         GroupedLayer(
@@ -176,3 +180,5 @@ void newGroupedLayer(rx::xml_node<>* node, LayerList& layers)
         )
     );
 }
+
+} // namespace tb
