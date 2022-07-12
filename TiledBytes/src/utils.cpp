@@ -13,18 +13,6 @@ void loadXml(const char *fp, std::string &content, rx::xml_document<>* doc)
     doc->parse<0>(&content[0]);
 }
 
-template <class T>
-void split(const std::string &s, char delim, std::vector<T> &result)
-{
-    std::istringstream iss(s);
-    for (std::string item; std::getline(iss, item, delim);) {
-        std::stringstream val(item);
-        T v;
-        val >> v;
-        result.push_back(v);
-    }
-}
-
 bool stob(const std::string& str)
 {
     if(str == "false" || str == "False") {

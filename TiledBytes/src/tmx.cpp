@@ -26,11 +26,11 @@ void loadTmx(const char *filepath, Tmx& usr_tmx)
         if (type == "tileset") {
             newTileset(node, usr_tmx.tilesets);
         } else if (type == "layer") {
-            newTileLayer(node, usr_tmx.layers);
+            newTileLayer(node, usr_tmx.layers, usr_tmx.width, usr_tmx.height);
         } else if (type == "objectgroup") {
             newObjectLayer(node, usr_tmx.layers);
         } else if (type == "group") {
-            newGroupedLayer(node, usr_tmx.layers);
+            newGroupedLayer(node, usr_tmx.layers, usr_tmx.width, usr_tmx.height);
         } else {
             printf("Warning: unknown layer type: %s\n", type.c_str());
         }
@@ -81,7 +81,7 @@ void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
 
 
     // Iterate through all tiles in this tileset and create a tile entry;
-    Tilelist tiles;
+    TileList tiles;
     for (int i = 0; i < tilecount; i ++)
     {
         // Use the tile's position in the tileset (i) + columns in this tileset + tile dimensions to
@@ -147,26 +147,59 @@ void newTileset(rx::xml_node<>* node, TilesetMap& tilesets)
         )
     );
 }
-void newTileLayer(rx::xml_node<>* node, LayerList& layers)
+void newTileLayer(rx::xml_node<>* node, LayerList& layers, const int tilewidth, const int tileheight)
 {
-    // todo
+    const int width = attr<int>(node, "width");
+    const int height = attr<int>(node, "height");
+
+    std::vector<int> allgids;
+    rx::xml_node<> *data = node->first_node("data");
+    split(std::string(data->value()), ',', allgids);
+
+    RectList allrects;
+    for (size_t i = 0; i < allgids.size(); i ++) {
+        if (allgids[i] == 0) {
+            continue;
+        }
+        allrects.push_back(Rect {
+            (int) i,
+            allgids[i],
+            (int) (i % width) * tilewidth,
+            (int) (i / width) * tileheight,
+            tilewidth,
+            tileheight,
+            "",
+            ""
+        });
+    }
+    layers.push_back(TileLayer(
+        attr<int>(node, "id"),
+        attr<const char*>(node, "name"),
+        width,
+        height,
+        allrects
+    ));
 }
 void newObjectLayer(rx::xml_node<>* node, LayerList& layers)
 {
-    // todo
+    layers.push_back(ObjectLayer(
+        attr<int>(node, "id"),
+        attr<const char*>(node, "name"),
+        extract<RectMap>(node)
+    ));
 }
-void newGroupedLayer(rx::xml_node<>* node, LayerList& layers)
+void newGroupedLayer(rx::xml_node<>* node, LayerList& layers, const int width, const int height)
 {
     LayerList sublayers;
     rx::xml_node<> *sub_layer = node->first_node();
     while(sub_layer) {
         std::string type = std::string(sub_layer->name());
         if (type == "layer") {
-            newTileLayer(sub_layer, sublayers);
+            newTileLayer(sub_layer, sublayers, width, height);
         } else if (type == "objectgroup") {
             newObjectLayer(sub_layer, sublayers);
         } else if (type == "group") {
-            newGroupedLayer(sub_layer, sublayers);
+            newGroupedLayer(sub_layer, sublayers, width, height);
         } else {
             printf("Warning: unknown layer type: %s\n", type.c_str());
         }

@@ -11,11 +11,11 @@ namespace tb
 
 void newTileset(rx::xml_node<>* node, TilesetMap& tilesets);
 
-void newTileLayer(rx::xml_node<>* node, LayerList& layers);
+void newTileLayer(rx::xml_node<>* node, LayerList& layers, const int width, const int height);
 
 void newObjectLayer(rx::xml_node<>* node, LayerList& layers);
 
-void newGroupedLayer(rx::xml_node<>* node, LayerList& layers);
+void newGroupedLayer(rx::xml_node<>* node, LayerList& layers, const int width, const int height);
 
 } // namespace tb
 

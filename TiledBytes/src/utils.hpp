@@ -8,8 +8,16 @@ namespace tb
 void loadXml(const char *fp, std::string &content, rx::xml_document<>* doc);
 
 template <class T>
-void split(const std::string &s, char delim, std::vector<T> &result);
-
+void split(const std::string &s, const char delim, std::vector<T> &result)
+{
+    std::istringstream iss(s);
+    for (std::string item; std::getline(iss, item, delim);) {
+        std::stringstream val(item);
+        T v;
+        val >> v;
+        result.push_back(v);
+    }
+}
 bool stob(const std::string& str);
 
 inline const float min(float a, float b) { return (a < b) ? a : b; };
