@@ -22,20 +22,26 @@ However, feel free to clone/fork/copy/etc and give feedback.
  - Serve alone as a fully featured game dev library.
  - Be considered useful for 3D or isometric game development. (although this could be done!)
 
-# RapidXml...
+# Useful Links:
+
+Get Tiled: https://www.mapeditor.org/
+
+Checkout RapidXml: http://rapidxml.sourceforge.net/
+
+### RapidXml...
 
 is not my own project or code. I do not claim ownership or copyrights to the rapidxml library.
 RapidXml is used by TiledBytes within its permissions stated in rapidxml/license.txt, 
 
 # The road to release
 
-I'm currently still building out this API. Tmx files seem to be working and Tsx files are on the
+I'm currently still building out this API. `.tmx` files seem to be working and `.tsx` files are on the
 way. I am also working to put together a much more robust testing framework which I'll use to pump
 out comprehensive tests. Might even get freaky and add some git workflows to the mess.
 
 ### What to expect in due time...
 
-I'm thinking once the following are implemented/tested/complete I will tag an official 'v1' release:
+I'm thinking once the following are implemented/tested/complete I will tag an official `TiledBytes.1.0' release:
  - Tmx/tsx API implemented
  - Build/install options and configurations
  - Cross-platform support
@@ -46,6 +52,7 @@ I'm thinking once the following are implemented/tested/complete I will tag an of
 ### Author
 
 Austin Herman
+
 austinherman868@gmail.com
 
 Feel free to contact me through email anytime!
