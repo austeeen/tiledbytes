@@ -5,20 +5,15 @@
 int main(int argc, char **argv)
 {
     tb::Tsx tsx;
-    tb::loadTsx("res/cat.tsx", tsx);
+    tb::load<tb::Tsx>("res/cat.tsx", tsx);
 
     printf("tsx: %s | tile size(%d, %d), total tiles: %d, columns: %d\n",
         tsx.name, tsx.tilewidth, tsx.tileheight, tsx.tilecount, tsx.columns);
 
-    printf("  tile list: %d\n", (int) tsx.tiles.size());
+    printf("  tile list: %d\n", (int) tsx.tilelist.size());
 
     printf("  image source: %s, size(%d,%d)\n", tsx.image.source, tsx.image.width, tsx.image.height);
 
-    printf("  animations\n");
-    for (auto& [id, frames] : tsx.animations) {
-        printf("    %d: %d\n", id, (int) frames.size());
-    }
-    
     printf("  properties\n");
     for (auto& [name, prp] : tsx.properties) {
         printf("    %s: %s\n", name, prp.value);

@@ -1,16 +1,12 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(TiledBytesLib VERSION 0.1.1 DESCRIPTION "A lightweight API for Tiled Map Editor files in C++")
+project(TiledBytes VERSION 0.1.1 DESCRIPTION "A lightweight API for Tiled Map Editor files in C++")
 
 add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        src/tiledbytes.cpp
-        src/utils.cpp
-        src/tmx.cpp
-        src/tsx.cpp
-        src/wangsets.cpp)
+        src/tiledbytes.cpp)
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
