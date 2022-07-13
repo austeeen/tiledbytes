@@ -35,7 +35,7 @@ namespace tb
 {
 
 
-    
+
 //------------------------------------------------------------------------------------------------//
 //      UTILS
 //------------------------------------------------------------------------------------------------//
@@ -94,9 +94,13 @@ namespace tb
 
     template<class T> T attr(const XmlNode *n, const char* key)
     {
+        if (!n) {
+            throw std::out_of_range(key);
+        }
+
         rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
         T val;
-        if (n_attr == nullptr) {
+        if (!n_attr) {
             throw std::out_of_range(key);
         }
         std::istringstream ss(n_attr->value());
@@ -106,11 +110,16 @@ namespace tb
 
     template<class T> T attr_if(const XmlNode *n, const char* key)
     {
-        rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
-        T val;
-        if (n_attr == nullptr) {
-            return val;
+        if (!n) {
+            return T();
         }
+
+        rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
+        if (n_attr == nullptr) {
+            return T();
+        }
+        
+        T val;
         std::istringstream ss(n_attr->value());
         ss >> val;
         return val;

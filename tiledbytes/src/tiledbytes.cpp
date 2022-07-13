@@ -28,6 +28,10 @@ namespace tb
 
     template <> bool attr(const XmlNode *n, const char *key)
     {
+        if (!n) {
+            throw std::out_of_range(key);
+        }
+
         rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
         if (n_attr == nullptr) {
             throw std::out_of_range(key);
@@ -37,6 +41,10 @@ namespace tb
 
     template <> const char* attr(const XmlNode *n, const char* key)
     {
+        if (!n) {
+            throw std::out_of_range(key);
+        }
+
         rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
         if (n_attr == nullptr) {
             throw std::out_of_range(key);
@@ -46,6 +54,9 @@ namespace tb
 
     template <> bool attr_if(const XmlNode *n, const char* key)
     {
+        if (!n) {
+            return false;
+        }
         rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
         if (n_attr == nullptr) {
             return false;
@@ -55,9 +66,12 @@ namespace tb
 
     template <> const char* attr_if(const XmlNode *n, const char* key)
     {
+        if (!n) {
+            return "";
+        }
         rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
         if (n_attr == nullptr) {
-            return nullptr;
+            return "";
         }
         return n_attr->value();
     };
@@ -125,6 +139,12 @@ namespace tb
         }
 
         XmlNode *tsx = doc->first_node();
+
+        usr_tsx.name = attr<const char*>(tsx, "name");
+        usr_tsx.tilewidth = attr<int>(tsx, "tilewidth");
+        usr_tsx.tileheight = attr<int>(tsx, "tileheight");
+        usr_tsx.tilecount = attr<int>(tsx, "tilecount");
+        usr_tsx.columns = attr<int>(tsx, "columns");
 
         extract<TileList>(tsx, usr_tsx.tilelist);
         extract<PropertyMap>(tsx, usr_tsx.properties);
@@ -273,7 +293,8 @@ namespace tb
         const int tilewidth = attr<int>(node, "tilewidth");
         const int tileheight = attr<int>(node, "tileheight");
 
-        // Create a map of entries in the tileset so we can look up information about the tile later on.
+        // Create a map of entries in the tileset so we can look up information about the tile later
+        // on.
         std::map<const int, XmlNode*> tileset_entries;
         for (XmlNode *tnode = node->first_node("tile"); tnode; tnode = tnode->next_sibling()) {
             if (std::string(tnode->name()) == "tile") {
@@ -288,8 +309,8 @@ namespace tb
         {
             const int idx = int(i);
 
-            // Use the tile's position in the tileset (i) + columns in this tileset + tile dimensions to
-            // find this tile's texture rectangle
+            // Use the tile's position in the tileset (i) + columns in this tileset + tile
+            // dimensions to find this tile's texture rectangle
             const TextureRect t_rect {
                 (int) idx,
                 // x, y, width, height
@@ -300,7 +321,8 @@ namespace tb
                 0, 0, tilewidth, tileheight
             };
 
-            // If the tile is in our tileset entry map, then include any information in the map entry.
+            // If the tile is in our tileset entry map, then grab the entry so we can include its
+            // info.
             XmlNode *tile_entry = nullptr;
             if (tileset_entries.count(i) != 0) {
                 tile_entry = tileset_entries.at(i);
