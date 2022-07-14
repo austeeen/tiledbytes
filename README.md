@@ -1,4 +1,4 @@
-[![pr-build](https://github.com/austeeen/tiledbytes/actions/workflows/pr-build.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/pr-build.yml)
+[![unit-tests](https://github.com/austeeen/tiledbytes/actions/workflows/on-push-ci.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/on-push-ci.yml)
 
 # Caution
 
@@ -33,7 +33,7 @@ Checkout RapidXml: http://rapidxml.sourceforge.net/
 ### RapidXml...
 
 is not my own project or code. I do not claim ownership or copyrights to the rapidxml library.
-RapidXml is used by TiledBytes within its permissions stated in rapidxml/license.txt, 
+RapidXml is used by TiledBytes within its permissions stated in rapidxml/license.txt,
 
 # The road to release
 
