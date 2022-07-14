@@ -1,5 +1,34 @@
 #!/usr/bin/env bash
 
+usage () {
+    echo \
+"-------------------------------------------------------------------------------
+                           ~TiledBytes run script~
+
+./run [OPTIONS]+
+
+description:
+    a script to build TiledBytes and run the test cases / example programs
+
+    ** providing no options will build everything and run the test cases.
+       equivalent to setting options 'b' and 't'
+
+options:
+    b       | build regularly
+    c       | clear all build files first, then build the app
+    g [app] | same as 'r' but using gdb
+    r [app] | run app in the build dir
+    t [...] | call 'test/run_test.sh [...]'
+    h       | display this help page
+
+    examples:
+        ./run
+        ./run a
+        ./run bac
+        ./run gb [app]
+-------------------------------------------------------------------------------"
+}
+
 cwd=$PWD
 
 quit() {
@@ -15,100 +44,76 @@ errcheck() {
     fi
 }
 
-usage () {
-    echo "
--------------------------------------------------------------------------------
-                           ~TiledBytes run script~
-
-./run [OPTIONS]+
-
-description:
-    a script to build TiledBytes and run the test cases / example programs
-
-    ** providing no options will build everything and run each test case
-       equivalent to setting options 'b' and 't'
-
-options:
-    b       | build regularly
-    c       | clear all build files first, then build the app
-    g [app] | same as 'r' but using gdb
-    r [app] | run app in the build dir
-    h       | display this help page
-
-    examples:
-        ./run
-        ./run b
-        ./run a
-        ./run gb [app]
--------------------------------------------------------------------------------"
-}
-
 # set up defaults
 build_dir="build"
-app=""
-run_cmd="./"
-do_build=0
-do_run=0
-cmake_clean=""
-
-# get the user specified app to run (if any)
-if [[ $# -ge 2 ]]; then
-    app=$2
-else
-    app=test_*.app
-fi
-
-echo $app
+run_cmd=""
+DO_BUILD=0
+DO_TEST=0
+DO_RUN=0
+DO_CLEAN=""
 
 build () {
+    echo "--| building lib"
     mkdir -p build && cd build
     errcheck $?
-    cmake .. && cmake --build . $cmake_clean
+    cmake .. && cmake --build . $DO_CLEAN
     errcheck $?
     cd ..
 }
 
+run_apps () {
+    if [[ $# -ne 1 ]]; then
+        echo "fatal: 'r' or 'g' option given but no app specified"
+        quit 1
+    fi
+    echo "--| running app"
+    cd $build_dir
+    eval "$run_cmd $2"
+}
+
+run_tests () {
+    echo "--| running tests"
+    cd test
+    eval "./run_tests.sh" $@
+}
 
 args=($(echo $1 | grep -o .))
-shift
 
 for c in "${args[@]}"; do
     case $c in
-        a)
-            do_run=1; app="test_*.app";;
         b)
-            do_build=1;;
+            DO_BUILD=1;;
         c)
-            do_build=1; cmake_clean="--clean-first";;
+            DO_BUILD=1; DO_CLEAN="--clean-first";;
         g)
-            do_run=1;   run_cmd="gdb ./";;
+            DO_RUN=1;   run_cmd="gdb ./";;
         r)
-            do_run=1;   run_cmd="./";;
+            DO_RUN=1;   run_cmd="./";;
+        t)
+            DO_TEST=1;;
         h)
-            usage;;
+            usage; quit;;
         *)
             echo "bad arg: $c";;
   esac
 done
 
-if [[ $do_build -eq 1 ]]; then
-    echo "-- building lib"
-    build
-    echo ""
+if [[ $DO_TEST -eq 1 && $DO_RUN -eq 1 ]]; then
+    echo "warning: both 't' and 'r|g' options were specified, but only one can be used. choosing 't'"
+    DO_RUN=0
 fi
 
-if [[ $do_run -eq 1 ]]; then
-    echo "-- running apps"
-    cd $build_dir
-    for a in $app; do
-        echo ""
-        echo "----| $a"
-        eval "$run_cmd$a"
-    done
-    cd $cwd
-    echo ""
+if [[ $DO_BUILD -eq 1 ]]; then
+    build
 fi
-echo "----------------------"
-echo "done."
+
+if [[ $DO_TEST -eq 1 ]]; then
+    shift
+    run_tests $@
+fi
+
+if [[ $DO_RUN -eq 1 ]]; then
+    run_apps $2
+fi
 
 quit 0

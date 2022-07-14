@@ -3,6 +3,6 @@
   "gccDefaultCFlags": "-Wall",
   "gccDefaultCppFlags": "-c -Wall -std=c++17 -fsyntax-only",
   "gccErrorLimit": 10,
-  "gccIncludePaths": "-., ./TiledBytes, ./TiledBytes/include",
+  "gccIncludePaths": "-., ./deps/cxxtest, ./tiledbytes, ./tiledbytes/include",
   "gccSuppressWarnings": false
 }

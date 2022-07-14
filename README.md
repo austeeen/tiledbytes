@@ -1,3 +1,5 @@
+[![pr-build](https://github.com/austeeen/tiledbytes/actions/workflows/pr-build.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/pr-build.yml)
+
 # Caution
 
 This project is in development! All code herein is experimental and not recommended for production!

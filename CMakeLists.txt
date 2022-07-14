@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-Wall -ggdb3")
 set(CMAKE_BUILD_TYPE Debug)
 
-add_subdirectory(TiledBytes)
+add_subdirectory(tiledbytes)
 
 
 file(GLOB TEST_SOURCES
@@ -18,7 +18,7 @@ file(GLOB TEST_SOURCES
 foreach(src ${TEST_SOURCES})
     get_filename_component(name ${src} NAME_WE)
     add_executable(${name}.app ${src})
-    target_link_libraries(${name}.app TiledBytesLib)
+    target_link_libraries(${name}.app TiledBytes)
 endforeach(src ${TEST_SOURCES})
 
 file(GLOB RSRCS
