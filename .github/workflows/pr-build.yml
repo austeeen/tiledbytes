@@ -1,0 +1,8 @@
+name: pr-build
+on: [pull_request]
+jobs:
+  build-lib:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./run b
