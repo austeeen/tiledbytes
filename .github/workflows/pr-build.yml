@@ -1,8 +1,15 @@
-name: pr-build
-on: [pull_request]
+name: PR CI
+
+on:
+  pull_request:
+    branches: [ $default-branch ]
+
 jobs:
-  build-lib:
+  build:
+  
     runs-on: ubuntu-latest
+  
     steps:
       - uses: actions/checkout@v3
-      - run: ./run b
+      - name: buildlib
+        run: ./run b
