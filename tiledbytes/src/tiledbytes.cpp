@@ -39,6 +39,32 @@ namespace tb
         return stob(std::string(n_attr->value()));
     };
 
+    template <> std::string attr(const XmlNode *n, const char* key)
+    {
+        if (!n) {
+            throw std::out_of_range(key);
+        }
+
+        rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
+        if (n_attr == nullptr) {
+            throw std::out_of_range(key);
+        }
+        return std::string(n_attr->value());
+    }
+
+    template <> const std::string attr(const XmlNode *n, const char* key)
+    {
+        if (!n) {
+            throw std::out_of_range(key);
+        }
+
+        rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
+        if (n_attr == nullptr) {
+            throw std::out_of_range(key);
+        }
+        return std::string(n_attr->value());
+    }
+
     template <> const char* attr(const XmlNode *n, const char* key)
     {
         if (!n) {
@@ -63,6 +89,30 @@ namespace tb
         }
         return stob(std::string(n_attr->value()));
     };
+
+    template <> std::string attr_if(const XmlNode *n, const char* key)
+    {
+        if (!n) {
+            return "";
+        }
+        rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
+        if (n_attr == nullptr) {
+            return "";
+        }
+        return std::string(n_attr->value());
+    }
+
+    template <> const std::string attr_if(const XmlNode *n, const char* key)
+    {
+        if (!n) {
+            return "";
+        }
+        rapidxml::xml_attribute<> *n_attr = n->first_attribute(key);
+        if (n_attr == nullptr) {
+            return "";
+        }
+        return std::string(n_attr->value());
+    }
 
     template <> const char* attr_if(const XmlNode *n, const char* key)
     {
@@ -133,7 +183,7 @@ namespace tb
         std::string content = "";
         loadXml(filepath, content, doc);
         if (doc == nullptr || content == "") {
-            printf("Error loading tmx file: %s\n", filepath);
+            printf("Error loading tsx file: %s\n", filepath);
             ERRCODE = ERR::CODE::FILE_LOAD_ERROR;
             return;
         }
@@ -164,9 +214,9 @@ namespace tb
     template <> void extract(const XmlNode *node, Property& prp)
     {
         if (!node) return;
-        prp.name = attr_if<const char*>(node, "name");
-        prp.type = attr_if<const char*>(node, "type");
-        prp.value = attr_if<const char*>(node, "value");
+        prp.name = attr_if<std::string>(node, "name");
+        prp.type = attr_if<std::string>(node, "type");
+        prp.value = attr_if<std::string>(node, "value");
     }
 
     template <> void extract(const XmlNode* node, TileRect& rect)
@@ -192,8 +242,8 @@ namespace tb
         }
         XmlNode *n = prps->first_node("property");
         while(n) {
-            prp_map.insert(std::pair<const char*, const Property>(
-                attr<const char*>(n, "name"),
+            prp_map.insert(std::pair<const std::string, const Property>(
+                attr<const std::string>(n, "name"),
                 extract<Property>(n)
             ));
             n = n->next_sibling();
@@ -301,6 +351,7 @@ namespace tb
         const int columns = attr<int>(node, "columns");
         const int tilewidth = attr<int>(node, "tilewidth");
         const int tileheight = attr<int>(node, "tileheight");
+        const int tilecount = attr<int>(node, "tilecount");
 
         // Create a map of entries in the tileset so we can look up information about the tile later
         // on.
@@ -308,15 +359,15 @@ namespace tb
         for (XmlNode *tnode = node->first_node("tile"); tnode; tnode = tnode->next_sibling()) {
             if (std::string(tnode->name()) == "tile") {
                 tileset_entries.insert(
-                    std::pair< const int, XmlNode* >(attr<int>(tnode, "id"), tnode)
+                    std::pair<const int, XmlNode*>(attr<int>(tnode, "id"), tnode)
                 );
             }
         }
 
         // Iterate through all tiles in this tileset and create a tile entry.
-        for (size_t i = 0; i < tileset_entries.size(); i ++)
+        for (int i = 0; i < tilecount; i ++)
         {
-            const int idx = int(i);
+            const int idx = i;
 
             // Use the tile's position in the tileset (i) + columns in this tileset + tile
             // dimensions to find this tile's texture rectangle

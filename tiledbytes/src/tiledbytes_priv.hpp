@@ -11,6 +11,7 @@
 #include <map>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <vector>
 
 // -- typeid
@@ -127,9 +128,17 @@ namespace tb
 
     template <> bool attr(const XmlNode *n, const char *key);
 
+    template <> std::string attr(const XmlNode *n, const char* key);
+
+    template <> const std::string attr(const XmlNode *n, const char* key);
+
     template <> const char* attr(const XmlNode *n, const char* key);
 
     template <> bool attr_if(const XmlNode *n, const char* key);
+
+    template <> std::string attr_if(const XmlNode *n, const char* key);
+
+    template <> const std::string attr_if(const XmlNode *n, const char* key);
 
     template <> const char* attr_if(const XmlNode *n, const char* key);
 

@@ -1,4 +1,6 @@
+# builds, examples, tests
 build/
+test/*.cpp
 
 # Prerequisites
 *.d

@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <stdint.h>
+#include <string>
 
 
 /*************************************************************
@@ -73,7 +74,7 @@ namespace tb
     typedef std::vector<Tile>    TileList;
     typedef std::vector<Wangset> WangsetList;
     typedef std::vector<Frame>   FrameList;
-    typedef std::map<const char*, const Property>  PropertyMap;
+    typedef std::map<const std::string, const Property>  PropertyMap;
     typedef std::map<const int,   const Rect>      RectMap;
     typedef std::map<const int,   const Tileset>   TilesetMap;
     typedef std::map<const int,   const Wangtile>  WangtileMap;
@@ -112,7 +113,7 @@ namespace tb
     };
 
     struct Property {
-        const char *name, *type, *value;
+        std::string name, type, value;
     };
 
     struct Rect {
