@@ -1,4 +1,4 @@
-test blah
+[![unit-tests](https://github.com/austeeen/tiledbytes/actions/workflows/on-push-ci.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/on-push-ci.yml)
 
 # Caution
 
