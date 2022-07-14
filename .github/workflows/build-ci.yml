@@ -1,8 +1,6 @@
-name: Develop Build
+name: build-state
 
-on:
-  push:
-    branches: [ develop ]
+on: [push]
 
 jobs:
   build:
@@ -10,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: build
       run: ./run b
