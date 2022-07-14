@@ -53,10 +53,10 @@ namespace tb
         struct GroupedLayer;
         struct ObjectLayer;
         struct TileLayer;
-    struct PositionRect;
-    struct Property;
     struct Rect;
-    struct TextureRect;
+        struct TextureRect;
+            struct TileRect;
+    struct Property;
     struct Tile;
     struct Tileset;
     struct Tmx;
@@ -111,28 +111,27 @@ namespace tb
         LayerList sublayers;
     };
 
-    struct PositionRect {
-        int x, y, width, height;
-    };
-
     struct Property {
         const char *name, *type, *value;
     };
 
     struct Rect {
-        const char *name, *type;
-        int id, gid, x, y, width, height;
-        PropertyMap properties;
+        int x, y, width, height;
     };
 
-    struct TextureRect {
-        int gid, x, y, width, height;
+    struct TextureRect: Rect {
+        int id, gid;
+    };
+
+    struct TileRect: TextureRect {
+        const char *name, *type;
+        PropertyMap properties;
     };
 
     struct Tile {
         int id;
         const char* type;
-        PositionRect position;
+        Rect position;
         TextureRect texture;
         RectList rects;
         PropertyMap properties;

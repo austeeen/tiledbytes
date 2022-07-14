@@ -169,7 +169,7 @@ namespace tb
         prp.value = attr_if<const char*>(node, "value");
     }
 
-    template <> void extract(const XmlNode* node, Rect& rect)
+    template <> void extract(const XmlNode* node, TileRect& rect)
     {
         if (!node) return;
         rect.name = attr_if<const char*>(node, "name");
@@ -198,6 +198,15 @@ namespace tb
             ));
             n = n->next_sibling();
         }
+    };
+
+    template <> void extract(const XmlNode* node, Rect& rect)
+    {
+        if (!node) return;
+        rect.x = attr_if<int>(node, "x");
+        rect.y = attr_if<int>(node, "y");
+        rect.width = attr_if<int>(node, "width");
+        rect.height = attr_if<int>(node, "height");
     };
 
     template <> void extract(const XmlNode* node, RectMap& rect_map)
@@ -317,7 +326,7 @@ namespace tb
                 idx % columns, idx / columns, tilewidth, tileheight
             };
             // a tileset has no positional data, but we can at least initialize its size
-            const PositionRect p_rect {
+            const Rect p_rect {
                 0, 0, tilewidth, tileheight
             };
 
@@ -380,9 +389,7 @@ namespace tb
             if (allgids[i] == 0) {
                 continue;
             }
-            tile_lyr.tilerects.push_back(Rect {
-                "",
-                "",
+            tile_lyr.tilerects.push_back(TextureRect {
                 (int) i,
                 allgids[i],
                 (int) (i % tile_lyr.width) * tilewidth,

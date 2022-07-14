@@ -118,7 +118,7 @@ namespace tb
         if (n_attr == nullptr) {
             return T();
         }
-        
+
         T val;
         std::istringstream ss(n_attr->value());
         ss >> val;
@@ -167,9 +167,11 @@ namespace tb
 
     template <> void extract(const XmlNode *node, Property& prp);
 
-    template <> void extract(const XmlNode* node, Rect& rect);
+    template <> void extract(const XmlNode* node, TileRect& rect);
 
     template <> void extract(const XmlNode* node, PropertyMap& prp_map);
+
+    template <> void extract(const XmlNode* node, Rect& rect);
 
     template <> void extract(const XmlNode* node, RectMap& rect_map);
 
