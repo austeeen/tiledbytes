@@ -1,6 +1,7 @@
 # builds, examples, tests
 build/
 test/*.cpp
+install/
 
 # Prerequisites
 *.d
