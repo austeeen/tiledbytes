@@ -134,6 +134,46 @@ namespace tb
 //      TILED PROJECT LOADING [ DECLARED IN PUBLIC HEADER ]
 //------------------------------------------------------------------------------------------------//
 
+    namespace fs = std::filesystem;
+
+    void _sub_search(const fs::directory_entry& root, ResourceTable& rsrc_tbl)
+    {
+        if (root.is_regular_file()) {
+            fs::path fp = root.path();
+            const std::string ext = fp.extension();
+            const std::string name = fp.filename();
+            const std::string full_path = std::string(fp);
+            if (ext == ".tsx") {
+                rsrc_tbl[FileType::Tsx].insert(std::make_pair(name, full_path));
+            } else if (ext == ".tmx") {
+                rsrc_tbl[FileType::Tmx].insert(std::make_pair(name, full_path));
+            } else if (ext == ".png") {
+                // to do -- support more image file types
+                rsrc_tbl[FileType::Img].insert(std::make_pair(name, full_path));
+            }
+        } else if (root.is_directory()) {
+            for (const fs::directory_entry& dir_entry : fs::recursive_directory_iterator(root)) {
+                _sub_search(dir_entry, rsrc_tbl);
+            }
+        }
+    }
+
+    void search(const char *root_dir, ResourceTable& rsrc_tbl)
+    {
+        fs::directory_entry root(root_dir);
+        if (!root.is_directory()) {
+            printf("Error: cannot search '%s', not a directory.\n", root_dir);
+            ERRCODE = ERR::CODE::BAD_SEARCH_ROOT;
+            return;
+        }
+
+        rsrc_tbl[FileType::Tsx] = FileMap();
+        rsrc_tbl[FileType::Tmx] = FileMap();
+        rsrc_tbl[FileType::Img] = FileMap();
+
+        _sub_search(root, rsrc_tbl);
+    }
+
     template <typename T>
     void load(const char *filepath, T& dest_obj) {
         // to do -- set error flag

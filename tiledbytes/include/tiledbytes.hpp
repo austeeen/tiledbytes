@@ -33,7 +33,8 @@ namespace tb
             FILE_LOAD_ERROR,
             FILE_NOT_FOUND,
             INVALID_LOAD_OBJECT,
-            INVALID_EXTRACT_OBJECT
+            INVALID_EXTRACT_OBJECT,
+            BAD_SEARCH_ROOT
         };
     } // namespace ERR
 
@@ -69,17 +70,21 @@ namespace tb
 
     // Type declarations
 
+    enum class FileType { Tsx, Tmx, Img };
+
     typedef std::vector<Layer>   LayerList;
     typedef std::vector<Rect>    RectList;
     typedef std::vector<Tile>    TileList;
     typedef std::vector<Wangset> WangsetList;
     typedef std::vector<Frame>   FrameList;
+
+    typedef std::map<const std::string, const std::string> FileMap;
+    typedef std::map<const FileType, FileMap> ResourceTable;
     typedef std::map<const std::string, const Property>  PropertyMap;
     typedef std::map<const int,   const Rect>      RectMap;
     typedef std::map<const int,   const Tileset>   TilesetMap;
     typedef std::map<const int,   const Wangtile>  WangtileMap;
     typedef std::map<const int,   const FrameList> AnimationMap;
-
 
 
     // Objects
@@ -181,6 +186,8 @@ namespace tb
 //------------------------------------------------------------------------------------------------//
 //      TILED PROJECT LOADING
 //------------------------------------------------------------------------------------------------//
+
+    void search(const char *filepath, ResourceTable& rsrc_tbl);
 
     template <typename T>
     void load(const char *filepath, T& dest_obj);
