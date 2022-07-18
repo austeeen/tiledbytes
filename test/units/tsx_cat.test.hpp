@@ -1,23 +1,23 @@
-#ifndef TEST_TSX_CAT_HPP
-#define TEST_TSX_CAT_HPP
+#ifndef TEST_TSX_SPIDER_HPP
+#define TEST_TSX_SPIDER_HPP
 
 #include <cxxtest/TestSuite.h>
 #include <tiledbytes.hpp>
 #include <map>
 
 
-class TsxCatTest : public CxxTest::TestSuite {
+class TsxSpiderTest : public CxxTest::TestSuite {
     tb::Tsx tsx;
     const char *tsx_file;
 
 public:
-    TsxCatTest():
+    TsxSpiderTest():
         tsx_file("res/spider.tsx")
     {
         tb::load<tb::Tsx>(tsx_file, tsx);
     }
 
-    static TsxCatTest *createSuite() { return new TsxCatTest(); }
+    static TsxSpiderTest *createSuite() { return new TsxSpiderTest(); }
     static void destroySuite(TsxSpiderTest *tsx_suite) { delete tsx_suite; }
 
     void testHadError() {
@@ -60,4 +60,4 @@ private:
 
 };
 
-#endif // TEST_TSX_CAT_HPP
+#endif // TEST_TSX_SPIDER_HPP
