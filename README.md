@@ -1,3 +1,8 @@
+[![build](https://github.com/austeeen/tiledbytes/actions/workflows/build.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/build.yml)
+[![install](https://github.com/austeeen/tiledbytes/actions/workflows/in-tree-install.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/in-tree-install.yml)
+[![unit-tests](https://github.com/austeeen/tiledbytes/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/austeeen/tiledbytes/actions/workflows/unit-tests.yml)
+
+
 # Caution
 
 This project is in development! All code herein is considered experimental until I can get an
