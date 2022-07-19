@@ -23,10 +23,11 @@ jobs:
               run: ./run c
 
             - name: "check build dir clean"
+              id: check_foo
               uses: andstor/file-existence-action@v1
               with:
                   files: "build/foo.txt"
 
             - name: File exists
-              if: steps.check_files.outputs.files_exists == 'false'
-                  run: exit 1
+              if: steps.check_foo.outputs.files_exists == 'true'
+              run: exit 1
