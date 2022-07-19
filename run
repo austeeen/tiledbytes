@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 usage () {
     echo \
 "-------------------------------------------------------------------------------
@@ -16,6 +17,7 @@ description:
 options:
     b       | build regularly
     c       | clear all build files first, then build the app
+    i       | install TiledBytes to ./install
     g [app] | same as 'r' but using gdb
     r [app] | run app in the build dir
     t [...] | call 'test/run_test.sh [...]'
@@ -50,15 +52,34 @@ run_cmd=""
 DO_BUILD=0
 DO_TEST=0
 DO_RUN=0
-DO_CLEAN=""
+DO_CLEAN=0
+DO_INSTALL=0
+INSTALL_DST="."
+
+clean() {
+    rm -rf ./build/*
+}
 
 build () {
+    if [[ $DO_CLEAN -eq 1 ]]; then
+        echo "--| cleaning build artifacts"
+        rm -rf ./build/*
+    fi
     echo "--| building lib"
     mkdir -p build && cd build
     errcheck $?
-    cmake .. && cmake --build . $DO_CLEAN
+    cmake .. && cmake --build .
     errcheck $?
     cd ..
+}
+
+install() {
+    echo "--| installing lib to $INSTALL_DST/install"
+    mkdir ./install
+    if [[ $? -ne 0 ]]; then
+        echo "cleaning install artifacts" && rm -rf ./install/*
+    fi
+    cd build && cmake --install $INSTALL_DST
 }
 
 run_apps () {
@@ -84,7 +105,9 @@ for c in "${args[@]}"; do
         b)
             DO_BUILD=1;;
         c)
-            DO_BUILD=1; DO_CLEAN="--clean-first";;
+            DO_BUILD=1; DO_CLEAN=1;;
+        i)
+            DO_INSTALL=1;;
         g)
             DO_RUN=1;   run_cmd="gdb ./";;
         r)
@@ -105,6 +128,10 @@ fi
 
 if [[ $DO_BUILD -eq 1 ]]; then
     build
+fi
+
+if [[ $DO_INSTALL -eq 1 ]]; then
+    install $2
 fi
 
 if [[ $DO_TEST -eq 1 ]]; then
