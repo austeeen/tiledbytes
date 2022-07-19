@@ -1,0 +1,33 @@
+name: build
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "grab commit"
+              uses: actions/checkout@v2
+
+            - name: build
+              run: ./run b
+
+            - name: "create dumb file"
+              uses: "finnp/create-file-action@master"
+              env:
+                  FILE_NAME: "build/foo.txt"
+                  FILE_DATA: "A flag for git CI job build-and-test."
+
+            - name: "clean build"
+              run: ./run c
+
+            - name: "check build dir clean"
+              id: check_foo
+              uses: andstor/file-existence-action@v1
+              with:
+                  files: "build/foo.txt"
+
+            - name: File exists
+              if: steps.check_foo.outputs.files_exists == 'true'
+              run: exit 1

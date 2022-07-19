@@ -1,0 +1,27 @@
+name: in-tree-install
+
+on: [push]
+
+jobs:
+    in-tree-install:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "grab commit"
+              uses: actions/checkout@v2
+
+            - name: "clean build"
+              run: ./run c
+
+            - name: "default in-tree install"
+              run: ./run i
+
+            - name: "check lib installed"
+              id: check_lib
+              uses: andstor/file-existence-action@v1
+              with:
+                files: "install/libTiledBytes.a, install/tiledbytes.hpp"
+
+            - name: File exists
+              if: steps.check_lib.outputs.files_exists == 'false'
+              run: exit 1

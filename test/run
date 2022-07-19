@@ -2,19 +2,20 @@
 
 usage () {
     echo \
-"run_test.sh
-
-./run_test.sh [OPTIONS]+
+"{tiledbytes}/test/run [OPTIONS]+
 
 description:
-    this script builds and runs all tests. Does NOT build the TiledBytes library.
+    Build / run tiledbytes unit/sample tests.
 
-    ** providing no options is equivalent to setting 'b' and 'u'
+    Does NOT build the library, and requires the library be built. the tests must also be built
+    before running.
+
+    see BUILDME.md / INSTALL.md for more info.
 
 options:
-    b    | build regularly
-    c    | clear all build files first, then build the app
-    u    | include unit tests [DEFAULT]
+    b    | build all unit tests
+    c    | clear all build files first, then build the unit tests
+    r    | run the unit tests
     s    | include the samples
     h    | display this help page"
 }
@@ -57,6 +58,7 @@ FILE_PTRN="*.test.*"
 
 DO_BUILD=0
 DO_CLEAN=0
+DO_RUN=0
 
 UNIT_SRCS="./units"
 SMPL_SRCS="./samples"
@@ -72,9 +74,11 @@ for c in "${args[@]}"; do
         c)
             DO_BUILD=1;
             DO_CLEAN=1;;
-        u)
+        r)
+            DO_RUN=1;
             ALL_SRCS="$ALL_SRCS $UNIT_SRCS/$FILE_PTRN";;
         s)
+            DO_RUN=1;
             ALL_SRCS="$ALL_SRCS $SMPL_SRCS/$FILE_PTRN";;
         h)
             usage; quit 0;;
@@ -83,22 +87,23 @@ for c in "${args[@]}"; do
   esac
 done
 
-if [[ ${ALL_SRCS} -eq "" ]]; then
-    ALL_SRCS="$UNIT_SRCS/$FILE_PTRN"
-fi
 
 if [[ $DO_CLEAN -eq 1 ]]; then
-    eval "rm ./${MAIN_TEST}.cpp ./${MAIN_TEST}.app"
+    eval "rm ./${MAIN_TEST}.cpp ./${MAIN_TEST}.app" && eval "rm -rf ./build/*"
     errcheck $? "Fatal: Could not clean build files"
 fi
 
 if [[ $DO_BUILD -eq 1 ]]; then
     eval "${CXX_TEST}/bin/cxxtestgen --error-printer -o ./${MAIN_TEST}.cpp ${ALL_SRCS}"
     errcheck $? "Fatal: Could not generate tests"
-# ../build/tiledbytes/libTiledBytes.a
+
     eval "$GCC -L${TEST_LIB} -I${TB_INC} -I${CXX_TEST} -o ./${MAIN_TEST}.app ./${MAIN_TEST}.cpp -l${TB_LIB}"
     errcheck $? "Fatal: Could not build tests"
 fi
 
-eval "./${MAIN_TEST}.app"
-quit $?
+if [[ $DO_RUN -eq 1 ]]; then
+    eval "./${MAIN_TEST}.app"
+    quit $?
+fi
+
+exit 0
