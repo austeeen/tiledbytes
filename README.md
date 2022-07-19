@@ -42,10 +42,10 @@ for Windows just yet.
 ### Run scripts...
 
 Are for user convenience and my own personal convenience. I recommend checking out the help docs for
-`{tiledbytes}/run` and `{tiledbytes}/test/run` to get started.
+`./run` and `./test/run` to get started.
 
 
-# Build library...
+### Build library...
 
 Using `./run`:
 
@@ -59,25 +59,26 @@ Manually:
     cmake --build .
 
 
-# Install library...
+### Install library...
 
 Using `./run`:
 
     ./run i
 
 Manually:
+
     mkdir install
     cmake --install ./build
 
 ** default install path is `./install/`
 
 
-# Using in other projects
+### Using in other projects
 
 Projects using tiledbytes should only require the `libTiledBytes.a` package and its public header
-'tiledbytes.hpp'
+`tiledbytes.hpp`
 
-For regular install paths simply copy the two files from `install/*` into your project.
+For regular install paths simply copy the two files from `./install/*` into your project.
 
 
 ---
@@ -85,9 +86,9 @@ For regular install paths simply copy the two files from `install/*` into your p
 
 # Useful Links:
 
-Get Tiled: https://www.mapeditor.org/
+Tiled: https://www.mapeditor.org/
 
-Checkout RapidXml: http://rapidxml.sourceforge.net/
+RapidXml: http://rapidxml.sourceforge.net/
 
 ### RapidXml...
 
@@ -99,13 +100,13 @@ RapidXml is used by TiledBytes within its permissions stated in deps/rapidxml/li
 is not my own project or code. I do not claim ownership or copyrights to the cxxtest library.
 cxxtest is used by TiledBytes within its permissions stated in deps/cxxtest/COPYING.
 
-# The road to release...
+### The road to release...
 
 I'm currently still building out this API. Core functionality is working, but largely untested.
 
 ### What to expect in due time...
 
-My plans for an official `tiledbytes-1.0' release:
+My plans for an official `tiledbytes-1.0` release:
  - Tmx/tsx API implemented
  - Build/install options and configurations
  - Basic cross-platform support (*nix/windows/OSX)
@@ -117,7 +118,7 @@ My plans for an official `tiledbytes-1.0' release:
 ---
 
 
-# Author
+### Author
 
 Austin Herman
 
