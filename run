@@ -20,7 +20,7 @@ options:
     i       | install TiledBytes to ./install
     g [app] | same as 'r' but using gdb
     r [app] | run app in the build dir
-    t [...] | call 'test/run_test.sh [...]'
+    t [...] | call 'test/run [...]'
     u       | build and run unit tests (eq: './run t br' or './test/run_tests.sh br')
     h       | display this help page
 
@@ -97,8 +97,8 @@ run_apps () {
 
 run_tests () {
     echo "--| running tests"
-    cd test
-    eval "./run_tests.sh" $@
+    cd test && eval "./run" $@
+    errcheck $?
 }
 
 args=($(echo $1 | grep -o .))

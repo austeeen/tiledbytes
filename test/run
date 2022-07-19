@@ -2,12 +2,10 @@
 
 usage () {
     echo \
-"run_test.sh
-
-./run_test.sh [OPTIONS]+
+"{tiledbytes}/test/run [OPTIONS]+
 
 description:
-    Build / Run tiledbytes tests.
+    Build / run tiledbytes unit/sample tests.
 
     Does NOT build the library, and requires the library be built. the tests must also be built
     before running.
