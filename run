@@ -21,6 +21,7 @@ options:
     g [app] | same as 'r' but using gdb
     r [app] | run app in the build dir
     t [...] | call 'test/run_test.sh [...]'
+    u       | build and run unit tests (eq: './run t br' or './test/run_tests.sh br')
     h       | display this help page
 
     examples:
@@ -50,11 +51,13 @@ errcheck() {
 build_dir="build"
 run_cmd=""
 DO_BUILD=0
-DO_TEST=0
-DO_RUN=0
 DO_CLEAN=0
 DO_INSTALL=0
 INSTALL_DST="."
+DO_RUN=0
+
+DO_TEST=0
+DO_BUILD_AND_TEST=0
 
 clean() {
     rm -rf ./build/*
@@ -114,6 +117,8 @@ for c in "${args[@]}"; do
             DO_RUN=1;   run_cmd="./";;
         t)
             DO_TEST=1;;
+        u)
+            DO_BUILD_AND_TEST=1;;
         h)
             usage; quit;;
         *)
@@ -132,6 +137,10 @@ fi
 
 if [[ $DO_INSTALL -eq 1 ]]; then
     install $2
+fi
+
+if [[ $DO_BUILD_AND_TEST -eq 1 ]]; then
+    run_tests br
 fi
 
 if [[ $DO_TEST -eq 1 ]]; then
