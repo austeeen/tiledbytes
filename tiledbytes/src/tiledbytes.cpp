@@ -9,7 +9,7 @@ namespace tb
 //      FILE IO
 //------------------------------------------------------------------------------------------------//
 
-    void loadXml(const char *fp, std::string &content, rapidxml::xml_document<>* doc)
+    void loadXml(const std::string& fp, std::string &content, rapidxml::xml_document<>* doc)
     {
         std::ifstream file(fp);
         std::stringstream buffer;
@@ -158,11 +158,11 @@ namespace tb
         }
     }
 
-    void search(const char *root_dir, ResourceTable& rsrc_tbl)
+    void search(const std::string& root_dir, ResourceTable& rsrc_tbl)
     {
         fs::directory_entry root(root_dir);
         if (!root.is_directory()) {
-            printf("Error: cannot search '%s', not a directory.\n", root_dir);
+            printf("Error: cannot search '%s', not a directory.\n", root_dir.c_str());
             ERRCODE = ERR::CODE::BAD_SEARCH_ROOT;
             return;
         }
@@ -175,19 +175,19 @@ namespace tb
     }
 
     template <typename T>
-    void load(const char *filepath, T& dest_obj) {
+    void load(const std::string& filepath, T& dest_obj) {
         // to do -- set error flag
         ERRCODE = ERR::CODE::INVALID_LOAD_OBJECT;
         printf("Error: Invalid or unknown type being loaded '%s'\n", asTypeName<T>());
     }
 
-    template <> void load(const char *filepath, Tmx& usr_tmx)
+    template <> void load(const std::string& filepath, Tmx& usr_tmx)
     {
         rapidxml::xml_document<>* doc = new rapidxml::xml_document<>();
         std::string content = "";
         loadXml(filepath, content, doc);
         if (doc == nullptr || content == "") {
-            printf("Error loading tmx file: %s\n", filepath);
+            printf("Error loading tmx file: %s\n", filepath.c_str());
             ERRCODE = ERR::CODE::FILE_LOAD_ERROR;
             return;
         }
@@ -217,20 +217,20 @@ namespace tb
         delete doc;
     }
 
-    template <> void load(const char *filepath, Tsx& usr_tsx)
+    template <> void load(const std::string& filepath, Tsx& usr_tsx)
     {
         rapidxml::xml_document<>* doc = new rapidxml::xml_document<>();
         std::string content = "";
         loadXml(filepath, content, doc);
         if (doc == nullptr || content == "") {
-            printf("Error loading tsx file: %s\n", filepath);
+            printf("Error loading tsx file: %s\n", filepath.c_str());
             ERRCODE = ERR::CODE::FILE_LOAD_ERROR;
             return;
         }
 
         XmlNode *tsx = doc->first_node();
 
-        usr_tsx.name = attr<const char*>(tsx, "name");
+        usr_tsx.name = attr<std::string>(tsx, "name");
         usr_tsx.tilewidth = attr<int>(tsx, "tilewidth");
         usr_tsx.tileheight = attr<int>(tsx, "tileheight");
         usr_tsx.tilecount = attr<int>(tsx, "tilecount");
@@ -299,8 +299,8 @@ namespace tb
     template <> void extract(const XmlNode* node, TileRect& rect)
     {
         if (!node) return;
-        rect.name = attr_if<const char*>(node, "name");
-        rect.type = attr_if<const char*>(node, "type");
+        rect.name = attr_if<std::string>(node, "name");
+        rect.type = attr_if<std::string>(node, "type");
         rect.id = attr_if<int>(node, "id");
         rect.gid = attr_if<int>(node, "gid");
         rect.x = attr_if<int>(node, "x");
@@ -371,7 +371,7 @@ namespace tb
         if (!img_node) {
             return;
         }
-        image.source = attr<const char*>(img_node, "source");
+        image.source = attr<std::string>(img_node, "source");
         image.width = attr<int>(img_node, "width");
         image.height = attr<int>(img_node, "height");
     };
@@ -392,7 +392,7 @@ namespace tb
     template <> void extract(const XmlNode* node, Wangset& wang_set)
     {
         if (!node) return;
-        std::string type = std::string(attr<const char*>(node, "type"));
+        std::string type = std::string(attr<std::string>(node, "type"));
 
         WangtileMap map;
         if (type == "edge") {
@@ -405,7 +405,7 @@ namespace tb
             printf("Warning: wangset type unknown: %s", type.c_str());
         }
 
-        wang_set.name = attr_if<const char*>(node, "name");
+        wang_set.name = attr_if<std::string>(node, "name");
         wang_set.type = type.c_str();
         wang_set.map = map;
     };
@@ -468,7 +468,7 @@ namespace tb
             // Create the new tile with any extra details from the tileset entry (if available)
             tile_list.push_back(Tile {
                 idx,
-                attr_if<const char*>(tile_entry, "type"),
+                attr_if<std::string>(tile_entry, "type"),
                 p_rect,
                 t_rect,
                 extract<RectList>(tile_entry),
@@ -491,7 +491,7 @@ namespace tb
                     attr<int>(tileset_node, "tileheight"),
                     attr<int>(tileset_node, "tilecount"),
                     attr<int>(tileset_node, "columns"),
-                    attr<const char*>(tileset_node, "name"),
+                    attr<std::string>(tileset_node, "name"),
                     extract<Image>(tileset_node),
                     extract<TileList>(tileset_node),
                     extract<WangsetList>(tileset_node),
@@ -505,7 +505,7 @@ namespace tb
     {
         if (!lyr_node) return;
         tile_lyr.id = attr<int>(lyr_node, "id"),
-        tile_lyr.name = attr<const char*>(lyr_node, "name"),
+        tile_lyr.name = attr<std::string>(lyr_node, "name"),
         tile_lyr.width = attr<int>(lyr_node, "width");
         tile_lyr.height = attr<int>(lyr_node, "height");
 
@@ -532,7 +532,7 @@ namespace tb
     {
         if (!lyr_node) return;
         obj_lyr.id = attr<int>(lyr_node, "id");
-        obj_lyr.name = attr<const char*>(lyr_node, "name");
+        obj_lyr.name = attr<std::string>(lyr_node, "name");
         extract<RectMap>(lyr_node, obj_lyr.rects);
     };
 
@@ -540,7 +540,7 @@ namespace tb
     {
         if (!lyr_node) return;
         grp_lyr.id = attr<int>(lyr_node, "id");
-        grp_lyr.name = attr<const char*>(lyr_node, "name");
+        grp_lyr.name = attr<std::string>(lyr_node, "name");
         XmlNode *sub_layer = lyr_node->first_node();
         while(sub_layer) {
             std::string type = std::string(sub_layer->name());
@@ -586,7 +586,7 @@ void asSet(const XmlNode* node, WangtileMap& map, WangsetMeta& setmeta)
             Wangtile {
                 attr<int>(wtile, "tileid"),
                 wang_id,
-                wang_id_str
+                std::string(wang_id_str)
             })
         );
     }

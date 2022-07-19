@@ -97,13 +97,13 @@ namespace tb
     };
 
     struct Image {
-        const char* source;
+        std::string source;
         int width, height;
     };
 
     struct Layer {
         int id;
-        const char* name;
+        std::string name;
         PropertyMap properties;
     };
 
@@ -133,13 +133,13 @@ namespace tb
     };
 
     struct TileRect: TextureRect {
-        const char *name, *type;
+        std::string name, type;
         PropertyMap properties;
     };
 
     struct Tile {
         int id;
-        const char* type;
+        std::string type;
         Rect position;
         TextureRect texture;
         RectList rects;
@@ -149,7 +149,7 @@ namespace tb
 
     struct Tileset {
         int firstgid, tilewidth, tileheight, tilecount, columns;
-        const char* name;
+        std::string name;
         Image image;
         TileList tiles;
         WangsetList wangsets;
@@ -157,7 +157,7 @@ namespace tb
     };
 
     struct Tmx {
-        const char* name;
+        std::string name;
         int width, height, tilewidth, tileheight;
         TilesetMap tilesets;
         LayerList layers;
@@ -166,20 +166,20 @@ namespace tb
 
     struct Tsx {
         int tilewidth, tileheight, tilecount, columns;
-        const char* name;
+        std::string name;
         Image image;
         TileList tilelist;
         PropertyMap properties;
     };
 
     struct Wangset {
-        const char *name, *type;
+        std::string name, type;
         WangtileMap map;
     };
 
     struct Wangtile {
         int tileid, wangid;
-        const char* wangid_str;
+        std::string wangid_str;
     };
 
 //----/ OBJECTS AND TYPES /-----------------------------------------------------------------------//
@@ -190,20 +190,20 @@ namespace tb
 //      TILED PROJECT LOADING
 //------------------------------------------------------------------------------------------------//
 
-    void search(const char *filepath, ResourceTable& rsrc_tbl);
+    void search(const std::string& filepath, ResourceTable& rsrc_tbl);
 
     template <typename T>
-    void load(const char *filepath, T& dest_obj);
+    void load(const std::string& filepath, T& dest_obj);
 
     template <typename T>
-    T load(const char *filepath) {
+    T load(const std::string& filepath) {
         T dest_obj;
         load<T>(filepath, dest_obj);
         return dest_obj;
     }
 
-    template <> void load(const char *filepath, Tmx& usr_tmx);
-    template <> void load(const char *filepath, Tsx& usr_tsx);
+    template <> void load(const std::string& filepath, Tmx& usr_tmx);
+    template <> void load(const std::string& filepath, Tsx& usr_tsx);
 
 //----/ TILED PROJECT LOADING /-------------------------------------------------------------------//
 
