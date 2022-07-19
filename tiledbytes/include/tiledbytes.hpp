@@ -34,7 +34,9 @@ namespace tb
             FILE_NOT_FOUND,
             INVALID_LOAD_OBJECT,
             INVALID_EXTRACT_OBJECT,
-            BAD_SEARCH_ROOT
+            BAD_SEARCH_ROOT,
+            NO_TILESET_FOUND,
+            GID_OUT_OF_RANGE
         };
     } // namespace ERR
 
@@ -72,19 +74,20 @@ namespace tb
 
     enum class FileType { Tsx, Tmx, Img };
 
-    typedef std::vector<Layer>   LayerList;
-    typedef std::vector<Rect>    RectList;
-    typedef std::vector<Tile>    TileList;
-    typedef std::vector<Wangset> WangsetList;
-    typedef std::vector<Frame>   FrameList;
+    typedef std::vector<Layer>       LayerList;
+    typedef std::vector<Rect>        RectList;
+    typedef std::vector<TextureRect> TextureList;
+    typedef std::vector<Tile>        TileList;
+    typedef std::vector<Wangset>     WangsetList;
+    typedef std::vector<Frame>       FrameList;
 
     typedef std::map<const std::string, const std::string> FileMap;
-    typedef std::map<const FileType, FileMap> ResourceTable;
-    typedef std::map<const std::string, const Property>  PropertyMap;
-    typedef std::map<const int,   const Rect>      RectMap;
-    typedef std::map<const int,   const Tileset>   TilesetMap;
-    typedef std::map<const int,   const Wangtile>  WangtileMap;
-    typedef std::map<const int,   const FrameList> AnimationMap;
+    typedef std::map<const FileType,    FileMap>           ResourceTable;
+    typedef std::map<const std::string, const Property>    PropertyMap;
+    typedef std::map<const int,         const Rect>        RectMap;
+    typedef std::map<const int,         const Tileset>     TilesetMap;
+    typedef std::map<const int,         const Wangtile>    WangtileMap;
+    typedef std::map<const int,         const FrameList>   AnimationMap;
 
 
     // Objects
@@ -106,7 +109,7 @@ namespace tb
 
     struct TileLayer: Layer {
         int width, height;
-        RectList tilerects;
+        TextureList tiles;
     };
 
     struct ObjectLayer: Layer {
@@ -203,6 +206,18 @@ namespace tb
     template <> void load(const char *filepath, Tsx& usr_tsx);
 
 //----/ TILED PROJECT LOADING /-------------------------------------------------------------------//
+
+
+
+//------------------------------------------------------------------------------------------------//
+//      SIMPLE UTILITY FUNCTIONS
+//------------------------------------------------------------------------------------------------//
+
+    bool getTileset(tb::Tileset& dest, tb::Tmx& tmx, const int gid);
+
+    bool getTile(tb::Tile& dest, tb::Tileset& tileset, const int gid);
+
+//----/ SIMPLE UTILITY FUNCTIONS /----------------------------------------------------------------//
 
 } // namespace tb
 

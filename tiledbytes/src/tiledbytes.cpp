@@ -248,6 +248,43 @@ namespace tb
 
 
 //------------------------------------------------------------------------------------------------//
+//      SIMPLE UTILITY FUNCTIONS
+//------------------------------------------------------------------------------------------------//
+
+
+    bool getTileset(int& indx, tb::Tmx& tmx, const int gid)
+    {
+        indx = 0; // arbitrary number
+        for (auto& [ts_gid, ts] : tmx.tilesets) {
+            if (gid >= ts_gid) {
+                if (indx < ts_gid) {
+                    indx = ts_gid;
+                }
+            }
+        }
+
+        if (indx == 0) {
+            ERRCODE = ERR::CODE::NO_TILESET_FOUND;
+            return false;
+        }
+        return true;
+    }
+
+    bool getTile(tb::Tile& dest, tb::Tileset& tileset, const int gid)
+    {
+        if ((size_t) gid >= tileset.tiles.size()) {
+            ERRCODE = ERR::CODE::GID_OUT_OF_RANGE;
+            return false;
+        }
+        dest = tileset.tiles.at(gid);
+        return true;
+    }
+
+//----/ SIMPLE UTILITY FUNCTIONS /----------------------------------------------------------------//
+
+
+
+//------------------------------------------------------------------------------------------------//
 //      DATA EXTRACTION
 //------------------------------------------------------------------------------------------------//
 
@@ -480,7 +517,7 @@ namespace tb
             if (allgids[i] == 0) {
                 continue;
             }
-            tile_lyr.tilerects.push_back(TextureRect {
+            tile_lyr.tiles.push_back(TextureRect {
                 (int) i,
                 allgids[i],
                 (int) (i % tile_lyr.width) * tilewidth,
