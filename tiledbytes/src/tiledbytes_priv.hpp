@@ -179,6 +179,8 @@ namespace tb
 
     template <> void extract(const XmlNode* node, TileRect& rect);
 
+    template <> void extract(const XmlNode* node, TileMap& rect);
+
     template <> void extract(const XmlNode* node, PropertyMap& prp_map);
 
     template <> void extract(const XmlNode* node, Rect& rect);

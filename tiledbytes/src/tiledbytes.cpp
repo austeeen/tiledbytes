@@ -310,6 +310,20 @@ namespace tb
         rect.properties = extract<PropertyMap>(node);
     }
 
+    template <> void extract(const XmlNode* node, TileMap& tile_map)
+    {
+        if (!node) return;
+        XmlNode *og = node->first_node("objectgroup");
+        if (!og) {
+            return;
+        }
+        XmlNode *obj = og->first_node("object");
+        while(obj != nullptr) {
+            tile_map.insert(std::pair<const int, TileRect>(attr<int>(node, "id"), extract<TileRect>(obj)));
+            obj = obj->next_sibling();
+        }
+    };
+
     template <> void extract(const XmlNode* node, PropertyMap& prp_map)
     {
         if (!node) return;
@@ -533,7 +547,7 @@ namespace tb
         if (!lyr_node) return;
         obj_lyr.id = attr<int>(lyr_node, "id");
         obj_lyr.name = attr<std::string>(lyr_node, "name");
-        extract<RectMap>(lyr_node, obj_lyr.rects);
+        extract<TileMap>(lyr_node, obj_lyr.tilemap);
     };
 
     template <> void extract(const XmlNode* lyr_node, GroupedLayer& grp_lyr, const int width, const int height)
