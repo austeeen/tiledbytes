@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(SqrBytes VERSION 0.1.1 DESCRIPTION "A library of useful game dev utilities in C++")
+project(TiledBytes VERSION 0.1.1 DESCRIPTION "A lightweight API for Tiled Map Editor files in C++")
 
 add_library(${PROJECT_NAME} STATIC)
 
