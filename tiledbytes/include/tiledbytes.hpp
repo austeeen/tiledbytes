@@ -34,7 +34,9 @@ namespace tb
             FILE_NOT_FOUND,
             INVALID_LOAD_OBJECT,
             INVALID_EXTRACT_OBJECT,
-            BAD_SEARCH_ROOT
+            BAD_SEARCH_ROOT,
+            NO_TILESET_FOUND,
+            GID_OUT_OF_RANGE
         };
     } // namespace ERR
 
@@ -72,19 +74,21 @@ namespace tb
 
     enum class FileType { Tsx, Tmx, Img };
 
-    typedef std::vector<Layer>   LayerList;
-    typedef std::vector<Rect>    RectList;
-    typedef std::vector<Tile>    TileList;
-    typedef std::vector<Wangset> WangsetList;
-    typedef std::vector<Frame>   FrameList;
+    typedef std::vector<Layer>       LayerList;
+    typedef std::vector<Rect>        RectList;
+    typedef std::vector<TextureRect> TextureList;
+    typedef std::vector<Tile>        TileList;
+    typedef std::vector<Wangset>     WangsetList;
+    typedef std::vector<Frame>       FrameList;
 
     typedef std::map<const std::string, const std::string> FileMap;
-    typedef std::map<const FileType, FileMap> ResourceTable;
-    typedef std::map<const std::string, const Property>  PropertyMap;
-    typedef std::map<const int,   const Rect>      RectMap;
-    typedef std::map<const int,   const Tileset>   TilesetMap;
-    typedef std::map<const int,   const Wangtile>  WangtileMap;
-    typedef std::map<const int,   const FrameList> AnimationMap;
+    typedef std::map<const FileType,    FileMap>           ResourceTable;
+    typedef std::map<const std::string, const Property>    PropertyMap;
+    typedef std::map<const int,         const Rect>        RectMap;
+    typedef std::map<const int,         const TileRect>    TileMap;
+    typedef std::map<const int,         const Tileset>     TilesetMap;
+    typedef std::map<const int,         const Wangtile>    WangtileMap;
+    typedef std::map<const int,         const FrameList>   AnimationMap;
 
 
     // Objects
@@ -94,23 +98,24 @@ namespace tb
     };
 
     struct Image {
-        const char* source;
+        std::string source;
         int width, height;
     };
 
     struct Layer {
+        virtual ~Layer() {};
         int id;
-        const char* name;
+        std::string name;
         PropertyMap properties;
     };
 
     struct TileLayer: Layer {
         int width, height;
-        RectList tilerects;
+        TextureList tiles;
     };
 
     struct ObjectLayer: Layer {
-        RectMap rects;
+        TileMap tilemap;
     };
 
     struct GroupedLayer: Layer {
@@ -130,13 +135,13 @@ namespace tb
     };
 
     struct TileRect: TextureRect {
-        const char *name, *type;
+        std::string name, type;
         PropertyMap properties;
     };
 
     struct Tile {
         int id;
-        const char* type;
+        std::string type;
         Rect position;
         TextureRect texture;
         RectList rects;
@@ -146,7 +151,7 @@ namespace tb
 
     struct Tileset {
         int firstgid, tilewidth, tileheight, tilecount, columns;
-        const char* name;
+        std::string name;
         Image image;
         TileList tiles;
         WangsetList wangsets;
@@ -154,7 +159,7 @@ namespace tb
     };
 
     struct Tmx {
-        const char* name;
+        std::string name;
         int width, height, tilewidth, tileheight;
         TilesetMap tilesets;
         LayerList layers;
@@ -163,20 +168,20 @@ namespace tb
 
     struct Tsx {
         int tilewidth, tileheight, tilecount, columns;
-        const char* name;
+        std::string name;
         Image image;
         TileList tilelist;
         PropertyMap properties;
     };
 
     struct Wangset {
-        const char *name, *type;
+        std::string name, type;
         WangtileMap map;
     };
 
     struct Wangtile {
         int tileid, wangid;
-        const char* wangid_str;
+        std::string wangid_str;
     };
 
 //----/ OBJECTS AND TYPES /-----------------------------------------------------------------------//
@@ -187,22 +192,34 @@ namespace tb
 //      TILED PROJECT LOADING
 //------------------------------------------------------------------------------------------------//
 
-    void search(const char *filepath, ResourceTable& rsrc_tbl);
+    void search(const std::string& filepath, ResourceTable& rsrc_tbl);
 
     template <typename T>
-    void load(const char *filepath, T& dest_obj);
+    void load(const std::string& filepath, T& dest_obj);
 
     template <typename T>
-    T load(const char *filepath) {
+    T load(const std::string& filepath) {
         T dest_obj;
         load<T>(filepath, dest_obj);
         return dest_obj;
     }
 
-    template <> void load(const char *filepath, Tmx& usr_tmx);
-    template <> void load(const char *filepath, Tsx& usr_tsx);
+    template <> void load(const std::string& filepath, Tmx& usr_tmx);
+    template <> void load(const std::string& filepath, Tsx& usr_tsx);
 
 //----/ TILED PROJECT LOADING /-------------------------------------------------------------------//
+
+
+
+//------------------------------------------------------------------------------------------------//
+//      SIMPLE UTILITY FUNCTIONS
+//------------------------------------------------------------------------------------------------//
+
+    bool getTileset(int& indx, tb::Tmx& tmx, const int gid);
+
+    bool getTile(tb::Tile& dest, tb::Tileset& tileset, const int gid);
+
+//----/ SIMPLE UTILITY FUNCTIONS /----------------------------------------------------------------//
 
 } // namespace tb
 

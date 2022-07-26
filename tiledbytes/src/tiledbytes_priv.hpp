@@ -64,7 +64,7 @@ namespace tb
         return type_name;
     }
 
-    void loadXml(const char *fp, std::string &content, rapidxml::xml_document<>* doc);
+    void loadXml(const std::string& fp, std::string &content, rapidxml::xml_document<>* doc);
 
 //----/ UTILS /-----------------------------------------------------------------------------------//
 
@@ -179,6 +179,8 @@ namespace tb
 
     template <> void extract(const XmlNode* node, TileRect& rect);
 
+    template <> void extract(const XmlNode* node, TileMap& rect);
+
     template <> void extract(const XmlNode* node, PropertyMap& prp_map);
 
     template <> void extract(const XmlNode* node, Rect& rect);
@@ -214,7 +216,7 @@ namespace tb
 //------------------------------------------------------------------------------------------------//
 
 struct WangsetMeta {
-    const char *type;
+    const std::string& type;
     const int total, offset, comma_skip;
 } EdgeSet   {"edge",   4, 0, 4},
   CornerSet {"corner", 4, 1, 4},

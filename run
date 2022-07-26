@@ -83,6 +83,7 @@ install() {
         echo "cleaning install artifacts" && rm -rf ./install/*
     fi
     cd build && cmake --install $INSTALL_DST
+    cd ..
 }
 
 run_apps () {
@@ -93,12 +94,14 @@ run_apps () {
     echo "--| running app"
     cd $build_dir
     eval "$run_cmd $2"
+    cd ..
 }
 
 run_tests () {
     echo "--| running tests"
     cd test && eval "./run" $@
     errcheck $?
+    cd ..
 }
 
 args=($(echo $1 | grep -o .))
@@ -135,9 +138,6 @@ if [[ $DO_BUILD -eq 1 ]]; then
     build
 fi
 
-if [[ $DO_INSTALL -eq 1 ]]; then
-    install $2
-fi
 
 if [[ $DO_BUILD_AND_TEST -eq 1 ]]; then
     run_tests br
@@ -146,6 +146,10 @@ fi
 if [[ $DO_TEST -eq 1 ]]; then
     shift
     run_tests $@
+fi
+
+if [[ $DO_INSTALL -eq 1 ]]; then
+    install $2
 fi
 
 if [[ $DO_RUN -eq 1 ]]; then
