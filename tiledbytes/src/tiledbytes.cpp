@@ -140,9 +140,9 @@ namespace tb
     {
         if (root.is_regular_file()) {
             fs::path fp = root.path();
-            const std::string ext = fp.extension();
-            const std::string name = fp.filename();
-            const std::string full_path = std::string(fp);
+            const std::string ext = fp.extension().string();
+            const std::string name = fp.filename().string();
+            const std::string full_path = fp.string();
             if (ext == ".tsx") {
                 rsrc_tbl[FileType::Tsx].insert(std::make_pair(name, full_path));
             } else if (ext == ".tmx") {
