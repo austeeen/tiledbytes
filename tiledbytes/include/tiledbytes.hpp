@@ -17,7 +17,6 @@
  *************************************************************/
 
 
-
 namespace tb
 {
 
@@ -222,5 +221,35 @@ namespace tb
 //----/ SIMPLE UTILITY FUNCTIONS /----------------------------------------------------------------//
 
 } // namespace tb
+
+void hello_world() {
+    printf("Hello fuckers\n");
+}
+
+
+void func_one(int num) {
+    printf("func one %i\n", num);
+}
+
+
+std::string func_two(std::string str) {
+    return "func two " + str;
+}
+
+
+/* extern "C" {
+    tb::Tsx TbLoadTsx(const std::string& filepath) {
+        return tb::load<tb::Tsx>(filepath);
+    }
+
+    tb::Tmx TbLoadTmx(const std::string& filepath) {
+        return tb::load<tb::Tmx>(filepath);
+    }
+
+    void hello_world();
+    void func_one(int);
+    std::string func_two(std::string);
+} */
+
 
 #endif // TILED_BYTES_HPP

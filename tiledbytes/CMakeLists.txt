@@ -9,7 +9,8 @@ add_library(${STATIC_LIB_NAME} STATIC)
 add_library(${SHARED_LIB_NAME} SHARED)
 
 set(TARGET_SRCS src/tiledbytes.cpp)
-set(HEADER include/tiledbytes.cpp)
+set(HEADER include/tiledbytes.hpp)
+set(PYLIB tiledbytes.py)
 
 target_sources(${STATIC_LIB_NAME} PRIVATE ${TARGET_SRCS})
 target_sources(${SHARED_LIB_NAME} PRIVATE ${TARGET_SRCS})
@@ -47,3 +48,5 @@ set_target_properties(${SHARED_LIB_NAME} PROPERTIES PUBLIC_HEADER ${HEADER})
 install(TARGETS ${STATIC_LIB_NAME} ${SHARED_LIB_NAME}
     DESTINATION ${CMAKE_SOURCE_DIR}/install
     PUBLIC_HEADER DESTINATION ${CMAKE_SOURCE_DIR}/install)
+
+file(COPY ${PYLIB} DESTINATION ${CMAKE_SOURCE_DIR}/install/)
